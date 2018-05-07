@@ -3,7 +3,7 @@ import Manager from './Manager';
 
 export default class Namespace {
 	private classes: Class[] = [];
-	constructor(public name: string, public manager?: Manager) {
+	constructor(public text: string, public manager?: Manager) {
 		if (manager) manager.add(this);
 	}
 	add(cls: Class): this {

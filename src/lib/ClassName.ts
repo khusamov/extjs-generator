@@ -29,6 +29,9 @@ export default class ClassName implements IClassName {
 	get name(): string {
 		return ClassName.parse(this.text).name;
 	}
+	get sourceFileName(): string {
+		return ClassName.toSourceFileName(this.text);
+	}
 
 	/**
 	 * Проверка имени на правильное написание.
@@ -57,6 +60,7 @@ export default class ClassName implements IClassName {
 		if (name.indexOf(namespace) !== 0) {
 			throw new Error(`Имя '${name}' не совпадает с пространством имен '${namespace}'.`);
 		}
+		name = name.trim();
 		const pathAndClassName = name.replace(namespace + '.', '');
 		const pathAndClassNameSplitted = pathAndClassName.split('.');
 		return {
@@ -74,14 +78,15 @@ export default class ClassName implements IClassName {
 	 * @param {string | ClassName} name
 	 * @param {string} rootPath
 	 */
-	static sourceFileName(name: string | IClassName, rootPath?: string) {
+	static toSourceFileName(name: string | IClassName, rootPath?: string) {
 		name = isImplementsIClassName(name) ? name : this.parse(name);
-		return ([]
-			.concat(rootPath ? rootPath : [])
+		const result: string = (
+			[].concat(rootPath ? rootPath : [])
 			.concat(name.path)
 			.concat(name.name)
-			.join('/') + '.js'
+			.join('/')
 		);
+		return result.length ? result + '.js' : '';
 	}
 	constructor(public text: string = '') {}
 }

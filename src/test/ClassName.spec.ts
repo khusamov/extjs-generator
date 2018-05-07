@@ -36,8 +36,8 @@ describe('ClassName', function() {
 		const name = 'Namespace.path1.path2.path3.ClassName';
 		const filename = 'path1/path2/path3/ClassName.js';
 		const rootPath = 'root/path';
-		assert.strictEqual<string>(ClassName.sourceFileName(name), filename);
-		assert.strictEqual<string>(ClassName.sourceFileName(name, rootPath), [rootPath, filename].join('/'));
+		assert.strictEqual<string>(ClassName.toSourceFileName(name), filename);
+		assert.strictEqual<string>(ClassName.toSourceFileName(name, rootPath), [rootPath, filename].join('/'));
 	});
 	it('Пустое имя', function() {
 		const className = new ClassName();
@@ -47,6 +47,7 @@ describe('ClassName', function() {
 		assert.strictEqual<number>(className.path.length, 0, 'Ожидается пустой массив');
 		assert.strictEqual<string>(className.name, '', 'Ожидается пустая строка вместо имени');
 		assert.strictEqual<string>(className.text, '', 'Ожидается пустая строка вместо полного имени');
+		assert.strictEqual<string>(className.sourceFileName, '', 'Ожидается пустая строка вместо имени файла');
 	});
 	it('Создание имени', function() {
 		const className = new ClassName('Namespace.path1.ClassName');
@@ -55,5 +56,6 @@ describe('ClassName', function() {
 		assert.deepEqual<string[]>(className.path, ['path1']);
 		assert.strictEqual<string>(className.name, 'ClassName');
 		assert.strictEqual<string>(className.text, 'Namespace.path1.ClassName');
+		assert.strictEqual<string>(className.sourceFileName, 'path1/ClassName.js');
 	});
 });

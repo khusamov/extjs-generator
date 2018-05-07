@@ -19,15 +19,15 @@ export function isImplementsIClassName(value: any): value is IClassName {
 	);
 }
 
-export default class ClassName {
+export default class ClassName implements IClassName {
 	get path(): string[] {
-		return [];
+		return ClassName.parse(this.text).path;
 	}
 	get namespace(): Namespace {
-		return undefined;
+		return new Namespace(ClassName.parse(this.text).namespace as string);
 	}
 	get name(): string {
-		return '';
+		return ClassName.parse(this.text).name;
 	}
 
 	/**
@@ -36,7 +36,14 @@ export default class ClassName {
 	 * @returns {boolean}
 	 */
 	static isValid(name: string): boolean {
-		return false;
+		const parsedName: IClassName = this.parse(name);
+		const nameRe = /^[A-Z]+([A-Z]?[a-z0-9]+)+$/;
+		const pathItemRe = /^[a-z]+((\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?/;
+		return (
+			Namespace.isValid(parsedName.namespace as string)
+			&& parsedName.path.reduce((result, item) => result && pathItemRe.test(item), true)
+			&& nameRe.test(parsedName.name)
+		);
 	}
 
 	/**

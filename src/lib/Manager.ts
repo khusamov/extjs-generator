@@ -6,7 +6,7 @@ export default class Manager {
 		return this.namespaces.length;
 	}
 	add(namespace: Namespace): this {
-		const existsNamespace: boolean = !!this.get(namespace.name);
+		const existsNamespace: boolean = !!this.get(namespace.text);
 		if (!existsNamespace) {
 			namespace.manager = this;
 			this.namespaces.push(namespace);
@@ -14,6 +14,6 @@ export default class Manager {
 		return this;
 	}
 	get(name: string): Namespace {
-		return this.namespaces.find(namespace => namespace.name === name);
+		return this.namespaces.find(namespace => namespace.text === name);
 	}
 }

@@ -1,9 +1,22 @@
+import * as _ from 'lodash';
 import Namespace from './Namespace';
 
 export interface IClassName {
-	name: string;
+	namespace: string | Namespace;
 	path: string[];
-	namespace: Namespace;
+	name: string;
+}
+
+export function isImplementsIClassName(value: any): value is IClassName {
+	return (
+		_.isObject(value)
+		&& 'namespace' in value
+		&& 'path' in value
+		&& 'name' in value
+		&& _.isString(value.namespace) || value.namespace instanceof Namespace
+		&& value.path.reduce((result, item) => result && _.isString(item), true)
+		&& _.isString(value.name)
+	);
 }
 
 export default class ClassName {
@@ -33,22 +46,35 @@ export default class ClassName {
 	 * @param {string} namespace
 	 * @returns {IClassName}
 	 */
-	static parse(name: string, namespace?: string | Namespace): IClassName {
-		namespace = namespace
-			? namespace instanceof Namespace ? namespace : new Namespace(namespace)
-			: new Namespace(name.split('.')[0]);
-
-		if (name.indexOf(namespace.text) !== 0) {
-			throw new Error(`Имя '${name}' не совпадает с пространством имен '${namespace.text}'.`);
+	static parse(name: string, namespace: string = name.split('.')[0]): IClassName {
+		if (name.indexOf(namespace) !== 0) {
+			throw new Error(`Имя '${name}' не совпадает с пространством имен '${namespace}'.`);
 		}
-
-		const pathAndClassName = name.replace(namespace.text + '.', '');
+		const pathAndClassName = name.replace(namespace + '.', '');
 		const pathAndClassNameSplitted = pathAndClassName.split('.');
 		return {
-			name: pathAndClassNameSplitted.slice(-1)[0],
+			namespace,
 			path: pathAndClassNameSplitted.slice(0, pathAndClassNameSplitted.length - 1),
-			namespace: namespace
+			name: pathAndClassNameSplitted.slice(-1)[0]
 		};
+	}
+
+	/**
+	 * Преобразование имени класса в путь к файлу с данным классом.
+	 * Ext.util.Observable — path/to/src/util/Observable.js
+	 * Ext.form.action.Submit — path/to/src/form/action/Submit.js
+	 * MyCompany.chart.axis.Numeric — path/to/src/chart/axis/Numeric.js
+	 * @param {string | ClassName} name
+	 * @param {string} rootPath
+	 */
+	static sourceFileName(name: string | IClassName, rootPath?: string) {
+		name = isImplementsIClassName(name) ? name : this.parse(name);
+		return ([]
+			.concat(rootPath ? rootPath : [])
+			.concat(name.path)
+			.concat(name.name)
+			.join('/') + '.js'
+		);
 	}
 	constructor(public text: string = '') {}
 }

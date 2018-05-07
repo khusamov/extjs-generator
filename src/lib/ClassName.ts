@@ -20,15 +20,34 @@ export function isImplementsIClassName(value: any): value is IClassName {
 }
 
 export default class ClassName implements IClassName {
+	/**
+	 * Массив с частями пути к классу.
+	 * @returns {string[]}
+	 */
 	get path(): string[] {
 		return ClassName.parse(this.text).path;
 	}
+
+	/**
+	 * Пространство имен.
+	 * @returns {Namespace}
+	 */
 	get namespace(): Namespace {
 		return new Namespace(ClassName.parse(this.text).namespace as string);
 	}
+
+	/**
+	 * Краткое имя класса (последняя часть из частей отделенных точками).
+	 * @returns {string}
+	 */
 	get name(): string {
 		return ClassName.parse(this.text).name;
 	}
+
+	/**
+	 * Путь к файлу класса.
+	 * @returns {string}
+	 */
 	get sourceFileName(): string {
 		return ClassName.toSourceFileName(this.text);
 	}
@@ -88,5 +107,10 @@ export default class ClassName implements IClassName {
 		);
 		return result.length ? result + '.js' : '';
 	}
+
+	/**
+	 * Конструктор.
+	 * @param {string} text
+	 */
 	constructor(public text: string = '') {}
 }

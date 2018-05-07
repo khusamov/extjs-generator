@@ -13,7 +13,7 @@ export default class Manager {
 		}
 		return this;
 	}
-	get(name: string): Namespace {
+	get(name: string): Namespace | undefined {
 		return this.namespaces.find(namespace => namespace.text === name);
 	}
 }

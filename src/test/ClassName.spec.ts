@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import ClassName, {IClassName} from '../lib/ClassName';

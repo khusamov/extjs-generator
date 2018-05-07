@@ -1,9 +1,7 @@
-import * as _ from 'lodash';
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import Namespace from '../lib/Namespace';
 import Manager from '../lib/Manager';
-import ClassName from '../lib/ClassName';
 
 describe('Namespace', function() {
 	it('Проверка пространства имен на валидность', function() {

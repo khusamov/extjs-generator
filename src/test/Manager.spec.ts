@@ -1,7 +1,6 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import * as Ext from '../index';
-import Class from '../lib/Class';
 
 describe('Manager', function() {
 	it('Пустой менеджер пространств имен', function() {
@@ -64,7 +63,7 @@ describe('Manager', function() {
 	it('Поиск класса в менеджере', function() {
 		const manager = new Ext.Manager();
 		manager.add(new Ext.Namespace('SampleNamespace1'));
-		manager.get('SampleNamespace1').add(new Class('SampleNamespace1.path1.ClassName'));
+		manager.get('SampleNamespace1').add(new Ext.Class('SampleNamespace1.path1.ClassName'));
 		const sampleClass = manager.find('SampleNamespace1.path1.ClassName');
 		assert.isDefined<Ext.Class>(sampleClass, 'Ожидается, что класс будет найден');
 		assert.strictEqual<string>(sampleClass.name, 'SampleNamespace1.path1.ClassName');

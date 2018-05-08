@@ -7,6 +7,11 @@ export interface IClassName {
 	name: string;
 }
 
+/**
+ * Проверка типа IClassName.
+ * @param value
+ * @returns {boolean}
+ */
 export function isImplementsIClassName(value: any): value is IClassName {
 	return (
 		_.isObject(value)
@@ -19,6 +24,9 @@ export function isImplementsIClassName(value: any): value is IClassName {
 	);
 }
 
+/**
+ * Класс для работы с именами классов.
+ */
 export default class ClassName implements IClassName {
 
 	/**
@@ -129,6 +137,10 @@ export default class ClassName implements IClassName {
 		this.name = parsedName.name;
 	}
 
+	/**
+	 * Полное имя класса.
+	 * @returns {string}
+	 */
 	toString(): string {
 		return this.text;
 	}

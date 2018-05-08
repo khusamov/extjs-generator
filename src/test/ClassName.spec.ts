@@ -29,6 +29,7 @@ describe('Ext.ClassName', function() {
 		assert.isTrue(Ext.ClassName.isValid('Namespace.path1.path2.path3.ClassName'));
 		assert.isFalse(Ext.ClassName.isValid('namespace.ClassName'));
 		assert.isFalse(Ext.ClassName.isValid('Namespace.className'));
+		assert.isFalse(Ext.ClassName.isValid('ClassName'));
 	});
 	it('Получение имени файла, соответствующего имени класса', function() {
 		const name = 'Namespace.path1.path2.path3.ClassName';

@@ -62,7 +62,8 @@ export default class ClassName implements IClassName {
 		const nameRe = /^[A-Z]+([A-Z]?[a-z0-9]+)+$/;
 		const pathItemRe = /^[a-z]+((\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?/;
 		return (
-			Namespace.isValid(parsedName.namespace as string)
+			name.indexOf('.') !== -1
+			&& Namespace.isValid(parsedName.namespace as string)
 			&& parsedName.path.reduce((result, item) => result && pathItemRe.test(item), true)
 			&& nameRe.test(parsedName.name)
 		);

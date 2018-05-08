@@ -20,37 +20,6 @@ export function isImplementsIClassName(value: any): value is IClassName {
 }
 
 export default class ClassName implements IClassName {
-	/**
-	 * Массив с частями пути к классу.
-	 * @returns {string[]}
-	 */
-	get path(): string[] {
-		return ClassName.parse(this.text).path;
-	}
-
-	/**
-	 * Пространство имен.
-	 * @returns {Namespace}
-	 */
-	get namespace(): Namespace {
-		return new Namespace(ClassName.parse(this.text).namespace as string);
-	}
-
-	/**
-	 * Краткое имя класса (последняя часть из частей отделенных точками).
-	 * @returns {string}
-	 */
-	get name(): string {
-		return ClassName.parse(this.text).name;
-	}
-
-	/**
-	 * Путь к файлу класса.
-	 * @returns {string}
-	 */
-	get sourceFileName(): string {
-		return ClassName.toSourceFileName(this.text);
-	}
 
 	/**
 	 * Проверка имени на правильное написание.
@@ -110,8 +79,57 @@ export default class ClassName implements IClassName {
 	}
 
 	/**
+	 * Пространство имен.
+	 * @returns {Namespace}
+	 */
+	namespace: Namespace;
+
+	/**
+	 * Массив с частями пути к классу.
+	 * @returns {string[]}
+	 */
+	path: string[];
+
+	/**
+	 * Краткое имя класса (последняя часть из частей отделенных точками).
+	 * @returns {string}
+	 */
+	name: string;
+
+	/**
+	 * Полное имя класса.
+	 * @returns {string}
+	 */
+	get text(): string {
+		return ([]
+			.concat(this.namespace.text || [])
+			.concat(this.path)
+			.concat(this.name || [])
+			.join('.')
+		);
+	}
+
+	/**
+	 * Путь к файлу класса.
+	 * @returns {string}
+	 */
+	get sourceFileName(): string {
+		return ClassName.toSourceFileName(this.text);
+	}
+
+	/**
 	 * Конструктор.
 	 * @param {string} text
+	 * @param {string} namespace
 	 */
-	constructor(public text: string = '') {}
+	constructor(text: string = '', namespace?: string) {
+		const parsedName = ClassName.parse(text, namespace);
+		this.namespace = new Namespace(parsedName.namespace as string);
+		this.path = parsedName.path;
+		this.name = parsedName.name;
+	}
+
+	toString(): string {
+		return this.text;
+	}
 }

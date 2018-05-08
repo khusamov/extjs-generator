@@ -15,6 +15,8 @@ describe('Class', function() {
 			assert.strictEqual<Ext.Class>(manager.find('Namespace1.path1.Class1'), class1);
 			assert.strictEqual<Ext.Class>(namespace1.get('Namespace1.path1.Class1'), class1);
 		});
+	});
+	describe('Генерация исключений при создании класса', function() {
 		it('Создание класса с неправильным пространством имен', function() {
 			const manager = new Ext.Manager();
 			const namespace1 = new Ext.Namespace('Namespace1', manager);

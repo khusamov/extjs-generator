@@ -1,30 +1,29 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import Namespace from '../lib/Namespace';
-import Manager from '../lib/Manager';
+import * as Ext from '../index';
 
 describe('Namespace', function() {
 	it('Проверка пространства имен на валидность', function() {
-		assert.isTrue(Namespace.isValid('Namespace'));
-		assert.isTrue(Namespace.isValid('NamespaceNamespace'));
-		assert.isTrue(Namespace.isValid('NamespaceNamespaceNamespace'));
-		assert.isTrue(Namespace.isValid('Namespace321321'));
-		assert.isFalse(Namespace.isValid('namespace'));
-		assert.isFalse(Namespace.isValid('Namespace_'));
-		assert.isFalse(Namespace.isValid('Namespace_Namespace'));
+		assert.isTrue(Ext.Namespace.isValid('Namespace'));
+		assert.isTrue(Ext.Namespace.isValid('NamespaceNamespace'));
+		assert.isTrue(Ext.Namespace.isValid('NamespaceNamespaceNamespace'));
+		assert.isTrue(Ext.Namespace.isValid('Namespace321321'));
+		assert.isFalse(Ext.Namespace.isValid('namespace'));
+		assert.isFalse(Ext.Namespace.isValid('Namespace_'));
+		assert.isFalse(Ext.Namespace.isValid('Namespace_Namespace'));
 	});
 
-	const manager = new Manager();
+	const manager = new Ext.Manager();
 	it('create', function() {
-		const sampleNamespace = new Namespace('SampleNamespace', manager);
-		assert.ok<Namespace>(sampleNamespace);
+		const sampleNamespace = new Ext.Namespace('SampleNamespace', manager);
+		assert.ok<Ext.Namespace>(sampleNamespace);
 	});
 	it('name', function() {
-		const sampleNamespace = new Namespace('SampleNamespace', manager);
+		const sampleNamespace = new Ext.Namespace('SampleNamespace', manager);
 		assert.strictEqual(sampleNamespace.text, 'SampleNamespace');
 	});
 	it('manager', function() {
-		const sampleNamespace = new Namespace('SampleNamespace', manager);
+		const sampleNamespace = new Ext.Namespace('SampleNamespace', manager);
 		assert.strictEqual(sampleNamespace.manager, manager);
 	});
 });

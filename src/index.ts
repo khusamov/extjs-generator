@@ -1,22 +1,4 @@
-// export { Ext } from './lib/Manager';
-
-// import {Ext as eee} from './lib/Manager';
-
-
-
-//export { default as Manager } from './lib/Manager';
-
-
-
-// import Manager from './lib/Manager';
-
-
-//
-// export namespace Ext {
-// 	export { Ext };
-// }
-//
-
-
-
-
+export { default as ClassName, IClassName } from './lib/ClassName';
+export { default as Manager } from './lib/Manager';
+export { default as Namespace } from './lib/Namespace';
+export { default as Class } from './lib/Class';

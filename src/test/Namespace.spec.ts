@@ -13,16 +13,18 @@ describe('Namespace', function() {
 		assert.isFalse(Ext.Namespace.isValid('Namespace_Namespace'));
 	});
 
-	const manager = new Ext.Manager();
 	it('create', function() {
+		const manager = new Ext.Manager();
 		const sampleNamespace = new Ext.Namespace('SampleNamespace', manager);
 		assert.ok<Ext.Namespace>(sampleNamespace);
 	});
 	it('name', function() {
+		const manager = new Ext.Manager();
 		const sampleNamespace = new Ext.Namespace('SampleNamespace', manager);
 		assert.strictEqual(sampleNamespace.text, 'SampleNamespace');
 	});
 	it('manager', function() {
+		const manager = new Ext.Manager();
 		const sampleNamespace = new Ext.Namespace('SampleNamespace', manager);
 		assert.strictEqual(sampleNamespace.manager, manager);
 	});

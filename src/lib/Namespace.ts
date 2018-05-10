@@ -18,6 +18,14 @@ export default class Namespace {
 	private classes: Class[] = [];
 
 	/**
+	 * Количество классов в данном пространстве имен.
+	 * @returns {number}
+	 */
+	get count(): number {
+		return this.classes.length;
+	}
+
+	/**
 	 * Конструктор.
 	 * @param {string} text
 	 * @param {Manager} manager

@@ -17,6 +17,7 @@ describe('Namespace', function() {
 		const manager = new Ext.Manager();
 		const sampleNamespace = new Ext.Namespace('SampleNamespace', manager);
 		assert.ok<Ext.Namespace>(sampleNamespace);
+		assert.strictEqual<number>(sampleNamespace.count, 0);
 	});
 	it('name', function() {
 		const manager = new Ext.Manager();

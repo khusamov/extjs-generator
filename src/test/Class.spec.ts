@@ -15,6 +15,14 @@ describe('Class', function() {
 			assert.strictEqual<Ext.Class>(manager.find('Namespace1.path1.Class1'), class1);
 			assert.strictEqual<Ext.Class>(namespace1.get('Namespace1.path1.Class1'), class1);
 		});
+		it('Создание класса с добавлением в пространство имен', function() {
+			const manager = new Ext.Manager();
+			const namespace1 = new Ext.Namespace('Namespace1', manager);
+			const class1 = new Ext.Class('Namespace1.path1.Class1');
+			namespace1.add(class1);
+			assert.strictEqual<Ext.Class>(manager.find('Namespace1.path1.Class1'), class1);
+			assert.strictEqual<Ext.Class>(namespace1.get('Namespace1.path1.Class1'), class1);
+		});
 	});
 	describe('Генерация исключений при создании класса', function() {
 		it('Создание класса с неправильным пространством имен', function() {

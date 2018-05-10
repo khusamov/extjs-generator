@@ -54,5 +54,10 @@ describe('Class', function() {
 				namespace2.add(class1);
 			}, `Попытка добавить в пространство имен 'Namespace2' класс 'Namespace1.path1.Class1' из пространства имен 'Namespace1'.`);
 		});
+		it('Попытка вместо пространства имен добавить дату', function() {
+			assert.throw(function() {
+				new Ext.Class('Namespace1.path1.Class1', new Date, {});
+			}, `Если указаны три аргумента, то аргумент namespaceOrConfig должен быть экземпляром класса Namespace.`);
+		});
 	});
 });

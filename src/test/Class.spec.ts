@@ -3,6 +3,7 @@ import { assert } from 'chai';
 import * as Ext from '../index';
 
 describe('Class', function() {
+
 	describe('Создание класса', function() {
 		it('Создание пустого класса, не привязанного к пространству имен', function() {
 			const class1 = new Ext.Class('Namespace1.path1.Class1');
@@ -24,6 +25,7 @@ describe('Class', function() {
 			assert.strictEqual<Ext.Class>(namespace1.get('Namespace1.path1.Class1'), class1);
 		});
 	});
+
 	describe('Генерация исключений при создании класса', function() {
 		it('Создание класса с неправильным пространством имен', function() {
 			const manager = new Ext.Manager();
@@ -60,4 +62,13 @@ describe('Class', function() {
 			}, `Если указаны три аргумента, то аргумент namespaceOrConfig должен быть экземпляром класса Namespace.`);
 		});
 	});
+
+	describe('extend', function() {
+		it('extend', function() {
+			const class1 = new Ext.Class('Namespace1.path1.Class1');
+			class1.extend = 'Ext.panel.Panel';
+			assert.strictEqual<string>(class1.extend, 'Ext.panel.Panel');
+		});
+	});
+
 });

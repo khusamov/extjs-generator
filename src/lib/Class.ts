@@ -1,10 +1,18 @@
-import {ObjectNode} from 'khusamov-javascript-generator';
+import { ObjectNode, StringNode } from 'khusamov-javascript-generator';
 import Namespace from './Namespace';
 import ClassName from './ClassName';
 
 export default class Class extends ObjectNode {
 	private config: any = {};
 	namespace: Namespace | undefined;
+	get extend(): string | undefined {
+		return this.has('extend') ? this.get<StringNode>('extend').value : undefined;
+	}
+	set extend(parentClassName: string) {
+		if (!ClassName.isValid(parentClassName)) throw new Error(`Имя класса '${parentClassName}' ошибочное.`);
+		if (!this.has('extend')) this.add('extend');
+		this.get<StringNode>('extend').value = parentClassName;
+	}
 	constructor(
 		name: string,
 		namespaceOrConfig?: Namespace | any | undefined,

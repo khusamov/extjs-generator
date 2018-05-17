@@ -37,7 +37,7 @@
     "typescript": "^2.8.3"
   },
   "dependencies": {
-    "khusamov-javascript-generator": "^1.3.2",
+    "khusamov-javascript-generator": "^1.4.1",
     "lodash": "^4.17.4"
   }
 }

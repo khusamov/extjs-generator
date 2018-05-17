@@ -63,7 +63,7 @@ describe('Class', function() {
 		});
 	});
 
-	describe('extend', function() {
+	describe('Основные поля класса', function() {
 		it('extend', function() {
 			const class1 = new Ext.Class('Namespace1.path1.Class1');
 			class1.extend = 'Ext.panel.Panel';

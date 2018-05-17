@@ -4,7 +4,6 @@ import Namespace from './Namespace';
 import ClassName from './ClassName';
 
 export default class Class extends ObjectNode {
-	private config: any = {};
 	namespace: Namespace | undefined;
 	get extend(): string | undefined {
 		return this.has('extend') ? this.get<StringNode>('extend').value as string : undefined;
@@ -26,26 +25,24 @@ export default class Class extends ObjectNode {
 	 * Если указаны три аргумента, то аргумент namespaceOrConfig должен быть экземпляром класса Namespace.
 	 * @param {string} name
 	 * @param {Namespace | any | undefined} namespaceOrConfig
-	 * @param config
+	 * @param {object} config
 	 */
 	constructor(
 		name: string,
 		namespaceOrConfig?: Namespace | any | undefined,
-		config: any = {}
+		config: object = {}
 	) {
-		super(name);
-
 		// Проверка имени класса.
 		if (!ClassName.isValid(name)) throw new Error(`Имя класса '${name}' ошибочное.`);
 
-		// Действия при разном количестве аргументов.
-		// Определение this.namespace и this.config.
+		// Определение namespace и config в зависимости от количества аргументов.
+		let namespace: Namespace;
 		switch (arguments.length) {
 			case 2:
 				if (namespaceOrConfig instanceof Namespace) {
-					this.namespace = namespaceOrConfig;
+					namespace = namespaceOrConfig;
 				} else {
-					this.config = namespaceOrConfig;
+					config = namespaceOrConfig;
 				}
 				break;
 			case 3:
@@ -55,17 +52,21 @@ export default class Class extends ObjectNode {
 						'должен быть экземпляром класса Namespace.'
 					].join(' '));
 				}
-				this.namespace = namespaceOrConfig;
-				this.config = config;
+				namespace = namespaceOrConfig;
 				break;
 		}
 
-		if (this.namespace) {
-			// Проверка, входит ли класс в данное пространство или нет.
-			if (name.indexOf(this.namespace.text) !== 0) {
-				throw new Error(`Класс '${name}' не входит в пространство имен '${this.namespace.text}'.`);
-			}
-			this.namespace.add(this);
+		// Проверка, входит ли класс в заданное пространство имен или нет.
+		if (namespace && name.indexOf(namespace.text) !== 0) {
+			throw new Error(`Класс '${name}' не входит в пространство имен '${namespace.text}'.`);
+		}
+
+		super(name, config);
+
+		// Добавление класса в заданное пространство имен.
+		if (namespace) {
+			namespace.add(this);
+			this.namespace = namespace;
 		}
 	}
 }

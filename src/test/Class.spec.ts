@@ -64,10 +64,22 @@ describe('Class', function() {
 	});
 
 	describe('Основные поля класса', function() {
-		it('extend', function() {
+		it('Добавление в extend', function() {
 			const class1 = new Ext.Class('Namespace1.path1.Class1');
 			class1.extend = 'Ext.panel.Panel';
 			assert.strictEqual<string>(class1.extend, 'Ext.panel.Panel');
+		});
+		it('Очистка extend', function() {
+			const class1 = new Ext.Class('Namespace1.path1.Class1');
+			class1.extend = 'Ext.panel.Panel';
+			class1.extend = undefined;
+			assert.isUndefined(class1.extend);
+		});
+		it('Создание extend через конструктор класса', function() {
+			const class1 = new Ext.Class('Namespace1.path1.Class1', {
+				extend: 'Ext.data.Model'
+			});
+			assert.strictEqual<string>(class1.extend, 'Ext.data.Model');
 		});
 	});
 

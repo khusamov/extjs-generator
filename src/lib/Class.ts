@@ -103,5 +103,9 @@ export default class Class extends ObjectNode {
 			namespace.add(this);
 			this.namespace = namespace;
 		}
+
+		this.initClass();
 	}
+
+	initClass() {};
 }

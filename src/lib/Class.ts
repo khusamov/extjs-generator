@@ -2,6 +2,11 @@ import * as _ from 'lodash';
 import { ObjectNode, StringNode, ArrayNode } from 'khusamov-javascript-generator';
 import Namespace from './Namespace';
 import ClassName from './ClassName';
+import {
+	TStringOrStringArray,
+	isTStringOrStringArray,
+	isEmptyStringOrStringArray
+} from './type/TStringOrStringArray';
 
 export default class Class extends ObjectNode {
 	namespace: Namespace | undefined;
@@ -26,6 +31,28 @@ export default class Class extends ObjectNode {
 	get uses(): ArrayNode {
 		if (!this.has('uses')) this.add('uses', ArrayNode);
 		return this.get<ArrayNode>('uses');
+	}
+	get alias(): TStringOrStringArray | undefined {
+		return (
+			this.has('alias')
+				? this.get<StringNode | ArrayNode>('alias').value as (string | string[])
+				: undefined
+		);
+	}
+	set alias(alias: TStringOrStringArray) {
+		if (isEmptyStringOrStringArray(alias)) {
+			// Когда узел alias не определен, то в выходном коде его не должно быть, поэтому удаляем.
+			// Иными словами нельзя допускать вариантов: alias: undefined, alias: null, alias: '',
+			// alias: [], alias: [''] и т.п.
+			this.remove(this.get('alias'));
+		} else {
+			if (!isTStringOrStringArray(alias)) throw new Error('Задан неправильный псевдоним класса.');
+			if (!this.has('alias')) {
+				this.add('alias', _.isString(alias) ? StringNode : ArrayNode);
+				if (_.isArray(alias)) this.get<ArrayNode>('alias').unique = true;
+			}
+			this.get<StringNode | ArrayNode>('alias').value = alias;
+		}
 	}
 
 	/**

@@ -91,6 +91,16 @@ describe('Class', function() {
 			class1.uses.add('Class1', 'Class2', 'Namespace2.sample.Class3');
 			assert.deepEqual<string[]>(class1.uses.value, ['Class1', 'Class2', 'Namespace2.sample.Class3']);
 		});
+		it('Добавление в alias одного псевдонима', function() {
+			const class1 = new Ext.Class('Namespace1.path1.Class1');
+			class1.alias = 'widget.class1';
+			assert.strictEqual<string>(class1.alias, 'widget.class1');
+		});
+		it('Добавление в alias массив псведонимов', function() {
+			const class1 = new Ext.Class('Namespace1.path1.Class1');
+			class1.alias = ['widget.class1', 'widget.class1v2', 'widget.class1v3'];
+			assert.deepEqual<string[]>(class1.alias, ['widget.class1', 'widget.class1v2', 'widget.class1v3']);
+		});
 	});
 
 });

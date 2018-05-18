@@ -64,42 +64,62 @@ describe('Class', function() {
 	});
 
 	describe('Основные поля класса', function() {
-		it('Добавление в extend', function() {
-			const class1 = new Ext.Class('Namespace1.path1.Class1');
-			class1.extend = 'Ext.panel.Panel';
-			assert.strictEqual<string>(class1.extend, 'Ext.panel.Panel');
-		});
-		it('Очистка extend', function() {
-			const class1 = new Ext.Class('Namespace1.path1.Class1');
-			class1.extend = 'Ext.panel.Panel';
-			class1.extend = undefined;
-			assert.isUndefined(class1.extend);
-		});
-		it('Создание extend через конструктор класса', function() {
-			const class1 = new Ext.Class('Namespace1.path1.Class1', {
-				extend: 'Ext.data.Model'
+		describe('extend', function() {
+			it('Добавление в extend', function() {
+				const class1 = new Ext.Class('Namespace1.path1.Class1');
+				class1.extend = 'Ext.panel.Panel';
+				assert.strictEqual<string>(class1.extend, 'Ext.panel.Panel');
 			});
-			assert.strictEqual<string>(class1.extend, 'Ext.data.Model');
+			it('Очистка extend', function() {
+				const class1 = new Ext.Class('Namespace1.path1.Class1');
+				class1.extend = 'Ext.panel.Panel';
+				class1.extend = undefined;
+				assert.isUndefined(class1.extend);
+			});
+			it('Создание extend через конструктор класса', function() {
+				const class1 = new Ext.Class('Namespace1.path1.Class1', {
+					extend: 'Ext.data.Model'
+				});
+				assert.strictEqual<string>(class1.extend, 'Ext.data.Model');
+			});
 		});
-		it('Добавление классов в requires', function() {
-			const class1 = new Ext.Class('Namespace1.path1.Class1');
-			class1.requires.add('Class1', 'Class2', 'Namespace2.sample.Class3');
-			assert.deepEqual<string[]>(class1.requires.value, ['Class1', 'Class2', 'Namespace2.sample.Class3']);
+		describe('requires', function() {
+			it('Добавление классов в requires', function() {
+				const class1 = new Ext.Class('Namespace1.path1.Class1');
+				class1.requires.add('Class1', 'Class2', 'Namespace2.sample.Class3');
+				assert.deepEqual<string[]>(class1.requires.value, ['Class1', 'Class2', 'Namespace2.sample.Class3']);
+			});
+			it('Проверка имеющегося requires', function() {
+				const class1 = new Ext.Class('Namespace1.path1.Class1', {
+					requires: ['Class1', 'Class2', 'Namespace2.sample.Class3']
+				});
+				assert.deepEqual<string[]>(class1.requires.value, ['Class1', 'Class2', 'Namespace2.sample.Class3']);
+			});
 		});
-		it('Добавление классов в uses', function() {
-			const class1 = new Ext.Class('Namespace1.path1.Class1');
-			class1.uses.add('Class1', 'Class2', 'Namespace2.sample.Class3');
-			assert.deepEqual<string[]>(class1.uses.value, ['Class1', 'Class2', 'Namespace2.sample.Class3']);
+		describe('uses', function() {
+			it('Добавление классов в uses', function() {
+				const class1 = new Ext.Class('Namespace1.path1.Class1');
+				class1.uses.add('Class1', 'Class2', 'Namespace2.sample.Class3');
+				assert.deepEqual<string[]>(class1.uses.value, ['Class1', 'Class2', 'Namespace2.sample.Class3']);
+			});
 		});
-		it('Добавление в alias одного псевдонима', function() {
-			const class1 = new Ext.Class('Namespace1.path1.Class1');
-			class1.alias = 'widget.class1';
-			assert.strictEqual<string>(class1.alias, 'widget.class1');
-		});
-		it('Добавление в alias массив псведонимов', function() {
-			const class1 = new Ext.Class('Namespace1.path1.Class1');
-			class1.alias = ['widget.class1', 'widget.class1v2', 'widget.class1v3'];
-			assert.deepEqual<string[]>(class1.alias, ['widget.class1', 'widget.class1v2', 'widget.class1v3']);
+		describe('alias', function() {
+			it('Добавление в alias одного псевдонима', function() {
+				const class1 = new Ext.Class('Namespace1.path1.Class1');
+				class1.alias = 'widget.class1';
+				assert.strictEqual<string>(class1.alias, 'widget.class1');
+			});
+			it('Добавление в alias массив псведонимов', function() {
+				const class1 = new Ext.Class('Namespace1.path1.Class1');
+				class1.alias = ['widget.class1', 'widget.class1v2', 'widget.class1v3'];
+				assert.deepEqual<string[]>(class1.alias, ['widget.class1', 'widget.class1v2', 'widget.class1v3']);
+			});
+			it('Проверка имеющегося alias', function() {
+				const class1 = new Ext.Class('Namespace1.path1.Class1', {
+					alias: 'widget.class1'
+				});
+				assert.strictEqual<string>(class1.alias as string, 'widget.class1');
+			});
 		});
 	});
 

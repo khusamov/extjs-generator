@@ -37,7 +37,7 @@ export default class Namespace {
 	/**
 	 * Добавить класс в пространство имен.
 	 * @param {Class} cls
-	 * @returns {this}
+	 * @returns {Namespace}
 	 */
 	add(cls: Class): this {
 		const namespaceHasClass = !!this.classes.find(testedClass => testedClass === cls);

@@ -81,6 +81,16 @@ describe('Class', function() {
 			});
 			assert.strictEqual<string>(class1.extend, 'Ext.data.Model');
 		});
+		it('Добавление классов в requires', function() {
+			const class1 = new Ext.Class('Namespace1.path1.Class1');
+			class1.requires.add('Class1', 'Class2', 'Namespace2.sample.Class3');
+			assert.deepEqual<string[]>(class1.requires.value, ['Class1', 'Class2', 'Namespace2.sample.Class3']);
+		});
+		it('Добавление классов в uses', function() {
+			const class1 = new Ext.Class('Namespace1.path1.Class1');
+			class1.uses.add('Class1', 'Class2', 'Namespace2.sample.Class3');
+			assert.deepEqual<string[]>(class1.uses.value, ['Class1', 'Class2', 'Namespace2.sample.Class3']);
+		});
 	});
 
 });

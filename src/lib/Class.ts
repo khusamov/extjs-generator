@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { ObjectNode, StringNode } from 'khusamov-javascript-generator';
+import { ObjectNode, StringNode, ArrayNode } from 'khusamov-javascript-generator';
 import Namespace from './Namespace';
 import ClassName from './ClassName';
 
@@ -18,6 +18,14 @@ export default class Class extends ObjectNode {
 			if (!this.has('extend')) this.add('extend', StringNode);
 			this.get<StringNode>('extend').value = parentClassName;
 		}
+	}
+	get requires(): ArrayNode {
+		if (!this.has('requires')) this.add('requires', ArrayNode);
+		return this.get<ArrayNode>('requires');
+	}
+	get uses(): ArrayNode {
+		if (!this.has('uses')) this.add('uses', ArrayNode);
+		return this.get<ArrayNode>('uses');
 	}
 
 	/**

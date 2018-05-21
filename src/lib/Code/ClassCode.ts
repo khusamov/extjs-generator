@@ -1,5 +1,5 @@
 import { ObjectCode } from 'khusamov-javascript-generator';
-import Class from '../Class';
+import Class from '../Ext/Class';
 
 export default class ClassCode extends ObjectCode<Class> {
 	protected createExpressionToString(): string {

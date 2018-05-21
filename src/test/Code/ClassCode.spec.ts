@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import { normalizeString } from '../util';
-import * as Ext from '../../index';
+import { Ext, Code } from '../../index';
 
 describe('Ext.code.ClassCode', function() {
 	it('Ext.code.ClassCode', function() {
@@ -16,7 +16,7 @@ describe('Ext.code.ClassCode', function() {
 				alert(this.name + " is eating: " + foodType);
 			}
 		});
-		const personClassCode = new Ext.code.ClassCode(personClass);
+		const personClassCode = new Code.ClassCode(personClass);
 		assert.strictEqual<string>(
 			normalizeString(personClassCode.toString()),
 			normalizeString(`

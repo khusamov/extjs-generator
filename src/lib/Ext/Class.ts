@@ -6,7 +6,7 @@ import {
 	TStringOrStringArray,
 	isTStringOrStringArray,
 	isEmptyStringOrStringArray
-} from './type/TStringOrStringArray';
+} from '../type/TStringOrStringArray';
 
 export default class Class extends ObjectNode {
 	namespace: Namespace | undefined;

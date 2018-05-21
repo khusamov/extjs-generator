@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import * as Ext from '../../index';
+import { Ext } from '../../index';
 
 describe('Ext.data.Model', function() {
 	it('Создание пустого класса Ext.data.Model', function() {

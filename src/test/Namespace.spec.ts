@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import * as Ext from '../index';
+import { Ext } from '../index';
 
 describe('Namespace', function() {
 	it('Проверка пространства имен на валидность', function() {

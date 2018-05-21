@@ -20,7 +20,7 @@ describe('Ext.data.Model', function() {
 			}
 		};
 		const class1 = new Ext.data.Model('Namespace1.ClassModel1');
-		class1.proxy = new Ext.data.proxy.ProxyNode(proxy);
+		class1.proxy.set(proxy);
 		assert.deepEqual<object>(class1.proxy.value, proxy);
 	});
 });

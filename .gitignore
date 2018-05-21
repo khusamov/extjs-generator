@@ -3,3 +3,4 @@
 /dist
 /temp
 npm-debug.log
+/src/test/Temp.spec.ts

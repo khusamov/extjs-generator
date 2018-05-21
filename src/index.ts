@@ -5,3 +5,6 @@ export { default as Class } from './lib/Class';
 
 import * as data from './lib/data';
 export { data };
+
+import * as code from './lib/code';
+export { code };

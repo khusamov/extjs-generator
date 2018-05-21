@@ -23,4 +23,15 @@ describe('Ext.data.Model', function() {
 		class1.proxy.set(proxy);
 		assert.deepEqual<object>(class1.proxy.value, proxy);
 	});
+	it('Добавление полей модели', function() {
+		const class1 = new Ext.data.Model('Namespace1.ClassModel1');
+		class1.fields.add({
+			name: 'field1',
+			mapping: 'data.Field1'
+		});
+		assert.deepEqual<object>(class1.fields.value, [{
+			name: 'field1',
+			mapping: 'data.Field1'
+		}]);
+	});
 });

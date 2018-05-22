@@ -119,6 +119,7 @@ export default class ClassName implements IClassName {
 
 	/**
 	 * Путь к файлу класса.
+	 * Например 'path/to/src/util/Observable.js'.
 	 * @returns {string}
 	 */
 	get sourceFileName(): string {

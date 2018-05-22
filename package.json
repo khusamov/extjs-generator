@@ -37,7 +37,9 @@
     "typescript": "^2.8.3"
   },
   "dependencies": {
+    "del": "^3.0.0",
     "khusamov-javascript-generator": "^1.6.0",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "mkdirp-promise": "^5.0.1"
   }
 }

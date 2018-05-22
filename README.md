@@ -4,6 +4,8 @@
 Генератор предназначен для создания ограниченной объектной модели JavaScript-кода 
 в оперативной памяти и его выгрузке в виде текста кода с форматированием.
 
+
+
 Инсталяция
 -----------
 
@@ -18,7 +20,7 @@ npm i khusamov-extjs-generator --save
 
 ```typescript
 
-import { Ext, Formatter } from 'khusamov-extjs-generator';
+import { Ext, Code, Formatter } from 'khusamov-extjs-generator';
 
 // Менеджер классов.
 const manager1 = new Ext.Manager;
@@ -26,18 +28,27 @@ const manager1 = new Ext.Manager;
 // Пространство имен классов.
 const namespace1 = new Ext.Namespace('Namespace1.sample', manager1);
 
-// Создание класса. Два способа.
+// Создание класса.
 const class1 = new Ext.Class('Class1', namespace1);
-namespace1.add(new Ext.Class('ClassName'));
 
 // Вывод кода объекта.
-const class1Code = new Ext.ClassCode(class1);
+const class1Code = new Code.ClassCode(class1);
 console.log(Formatter.prettyFormat(class1Code.toString()));
 
 // Вывод всего кода в директорию.
-const manager1Code = new Ext.ManagerCode(manager1);
+const manager1Code = new Code.ManagerCode(manager1);
 manager1Code.formatter = Formatter;
-manager1Code.saveTo('path/to/dir');
+manager1Code.saveTo('path/to/dir').then(() => {
+	console.log('Файлы сохранены.');
+});
+
+// Сохранение классов из нескольких пространств имен.
+manager1Code.saveTo('path/to/dir', {
+    Namespace1: 'ns1',
+    Namespace2: 'ns1'
+}).then(() => {
+    console.log('Файлы сохранены.');
+});
 
 ```
 

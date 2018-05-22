@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import * as Fs from 'fs';
 import * as Path from 'path';
 import * as Del from 'del';
-import * as MakeDir from 'mkdirp-promise';
+import MakeDir = require('mkdirp-promise');
 
 import Formatter from 'khusamov-javascript-generator/dist/lib/util/Formatter';
 import Manager from '../Ext/Manager';

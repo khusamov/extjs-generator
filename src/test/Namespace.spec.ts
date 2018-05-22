@@ -29,4 +29,24 @@ describe('Namespace', function() {
 		const sampleNamespace = new Ext.Namespace('SampleNamespace', manager);
 		assert.strictEqual(sampleNamespace.manager, manager);
 	});
+	it('Пространство имен как итератор по классам', function() {
+		const namespace1 = new Ext.Namespace('Namespace1');
+		namespace1
+			.add(new Ext.Class('Namespace1.Class1'))
+			.add(new Ext.Class('Namespace1.Class2'))
+			.add(new Ext.Class('Namespace1.Class3'));
+		// Цикл по итератору.
+		for (let cls of namespace1) {
+			assert.instanceOf<Ext.Class>(cls, Ext.Class);
+		}
+		// Оператор ... для итератора.
+		assert.deepEqual(
+			[...namespace1].map(cls => cls.name),
+			[
+				'Namespace1.Class1',
+				'Namespace1.Class2',
+				'Namespace1.Class3'
+			]
+		);
+	});
 });

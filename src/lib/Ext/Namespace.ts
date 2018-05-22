@@ -63,4 +63,12 @@ export default class Namespace {
 	get(name: string): Class {
 		return this.classes.find(cls => cls.name === name);
 	}
+
+	/**
+	 * Реализация итератора для пространства имен.
+	 * @returns {IterableIterator<Namespace>}
+	 */
+	*[Symbol.iterator](): IterableIterator<Class> {
+		for (let ns of this.classes) yield ns;
+	}
 }

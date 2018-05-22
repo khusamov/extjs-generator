@@ -28,6 +28,26 @@ describe('Manager', function() {
 		assert.strictEqual<Ext.Namespace>(manager.get('SampleNamespace1'), sampleNamespace1);
 		assert.strictEqual<Ext.Namespace>(manager.get('SampleNamespace2'), sampleNamespace2);
 	});
+	it('Менеджер как итератор по пространствам имен', function() {
+		const manager = new Ext.Manager();
+		manager
+			.add(new Ext.Namespace('SampleNamespace1'))
+			.add(new Ext.Namespace('SampleNamespace2'))
+			.add(new Ext.Namespace('SampleNamespace3'));
+		// Цикл по итератору.
+		for (let namespace of manager) {
+			assert.instanceOf<Ext.Namespace>(namespace, Ext.Namespace);
+		}
+		// Оператор ... для итератора.
+		assert.deepEqual(
+			[...manager].map(ns => ns.name),
+			[
+				'SampleNamespace1',
+				'SampleNamespace2',
+				'SampleNamespace3'
+			]
+		);
+	});
 
 
 

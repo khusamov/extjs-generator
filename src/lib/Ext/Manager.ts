@@ -61,4 +61,12 @@ export default class Manager {
 			)
 		);
 	}
+
+	/**
+	 * Реализация итератора для менеджера пространств имен.
+	 * @returns {IterableIterator<Namespace>}
+	 */
+	*[Symbol.iterator](): IterableIterator<Namespace> {
+		for (let ns of this.namespaces) yield ns;
+	}
 }

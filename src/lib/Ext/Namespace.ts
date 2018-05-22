@@ -25,6 +25,10 @@ export default class Namespace {
 		return this.classes.length;
 	}
 
+	get name(): string {
+		return this.text;
+	}
+
 	/**
 	 * Конструктор.
 	 * @param {string} text

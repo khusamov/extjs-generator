@@ -23,10 +23,12 @@
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
+    "@types/del": "^3.0.1",
     "@types/expect": "^1.20.3",
     "@types/express": "^4.0.35",
     "@types/jsonpath": "^0.2.0",
     "@types/lodash": "^4.14.109",
+    "@types/mkdirp-promise": "^5.0.0",
     "@types/mocha": "^5.2.0",
     "@types/node": "^7.0.65",
     "chai": "^4.1.2",

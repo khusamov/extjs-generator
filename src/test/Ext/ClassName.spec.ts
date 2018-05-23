@@ -1,3 +1,4 @@
+import * as Path from "path";
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import { Ext } from '../../index';
@@ -31,12 +32,18 @@ describe('Ext.ClassName', function() {
 		assert.isFalse(Ext.ClassName.isValid('Namespace.className'));
 		assert.isFalse(Ext.ClassName.isValid('ClassName'));
 	});
-	it('Получение имени файла, соответствующего имени класса', function() {
-		const name = 'Namespace.path1.path2.path3.ClassName';
-		const filename = 'path1/path2/path3/ClassName.js';
-		const rootPath = 'root/path';
-		assert.strictEqual<string>(Ext.ClassName.toSourceFileName(name), filename);
-		assert.strictEqual<string>(Ext.ClassName.toSourceFileName(name, rootPath), [rootPath, filename].join('/'));
+	describe('Получение имени файла, соответствующего имени класса', function() {
+		for (let [name, filename] of Object.entries({
+			'Namespace.ClassName': 'ClassName.js'.split('/').join(Path.sep),
+			'Namespace.path1.ClassName': 'path1/ClassName.js'.split('/').join(Path.sep),
+			'Namespace.path1.path2.path3.ClassName': 'path1/path2/path3/ClassName.js'.split('/').join(Path.sep)
+		})) {
+			it(name, function() {
+				const rootPath = 'root/path';
+				assert.strictEqual<string>(Ext.ClassName.toSourceFileName(name), filename);
+				assert.strictEqual<string>(Ext.ClassName.toSourceFileName(name, rootPath), [rootPath, filename].join(Path.sep));
+			});
+		}
 	});
 	it('Пустое имя', function() {
 		const className = new Ext.ClassName();

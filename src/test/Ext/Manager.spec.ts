@@ -88,4 +88,11 @@ describe('Manager', function() {
 		assert.isDefined<Ext.Class>(sampleClass, 'Ожидается, что класс будет найден');
 		assert.strictEqual<string>(sampleClass.name, 'SampleNamespace1.path1.ClassName');
 	});
+	it('Список классов', function() {
+		const manager1 = new Ext.Manager();
+		const namespace1 = new Ext.Namespace('Namespace1', manager1);
+		const classList = ['Namespace1.Class1', 'Namespace1.path1.ClassName', 'Namespace1.path1.path2.path3.ClassName'];
+		for (let className of classList) namespace1.add(new Ext.Class(className));
+		assert.deepEqual<string[]>(manager1.classes.map(cls => cls.name), classList);
+	});
 });

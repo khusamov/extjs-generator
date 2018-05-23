@@ -39,40 +39,11 @@ export default class ManagerCode {
 		for (let dir of directoryList) await MakeDir(dir);
 
 		// Записать файлы.
-		classList.forEach(cls => {
+		for (let cls of classList) {
 			const code = new ClassCode(cls);
 			const fileName = ClassName.toSourceFileName(cls.name, targetDir);
 			const fileContent = Formatter.prettyFormat(code.toString());
-		});
-
-
-		// Promise.resolve()
-		//
-		// // Очистить целевую директорию (удалить предыдущие файлы и директории).
-		// .then(() => {
-		// 	return Del(Path.join(targetDir, '**/*'));
-		// })
-		//
-		// // Логирование удаленных файлов и директорий.
-		// .then((deleted: string[]) => {
-		// 	deleted.forEach(item => console.log);
-		// })
-		//
-		// // Создать новую структуру директорий на диске.
-		// .then(() => {
-		// 	const directoryList: string[] = _.uniq(classList.map(cls => {
-		// 		return Path.dirname(ClassName.toSourceFileName(cls.name, targetDir));
-		// 	}));
-		// 	return Promise.all(directoryList.map(dir => MakeDir(dir)));
-		// })
-		//
-		// // Записать файлы.
-		// .then(() => {
-		// 	classList.forEach(cls => {
-		// 		const code = new ClassCode(cls);
-		// 		const fileName = ClassName.toSourceFileName(cls.name, targetDir);
-		// 		const fileContent = Formatter.prettyFormat(code.toString());
-		// 	});
-		// });
+			await writeFile(fileName, fileContent);
+		}
 	}
 }

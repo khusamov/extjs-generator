@@ -38,17 +38,19 @@ console.log(Formatter.prettyFormat(class1Code.toString()));
 // Вывод всего кода в директорию.
 const manager1Code = new Code.ManagerCode(manager1);
 manager1Code.formatter = Formatter;
-manager1Code.saveTo('path/to/dir').then(() => {
-	console.log('Файлы сохранены.');
-});
+(async () => {
+    await manager1Code.saveTo('path/to/dir');
+    console.log('Файлы сохранены.');
+})();
 
 // Сохранение классов из нескольких пространств имен.
-manager1Code.saveTo('path/to/dir', {
-    Namespace1: 'ns1',
-    Namespace2: 'ns1'
-}).then(() => {
+(async () => {
+    await manager1Code.saveTo('path/to/dir', {
+        Namespace1: 'ns1',
+        Namespace2: 'ns1'
+    });
     console.log('Файлы сохранены.');
-});
+})();
 
 ```
 

@@ -21,29 +21,32 @@ export default class ManagerCode {
 			throw new Error('Не заданы пути для разных пространств имен.');
 		}
 
-		// Получить список классов.
-		const classList: Class[] = (
-			[...this.manager].reduce<Class[]>((result, ns: Namespace) => result.concat([...ns]), [])
-		);
+		if (!targetDir) throw new Error('Не задана целевая директория.');
+
+		if (paths) throw new Error('Опция paths еще не реализована!');
 
 		// Очистить целевую директорию (удалить предыдущие файлы и директории).
-		const deleted = await Del(Path.join(targetDir, '**/*'));
+		const deleted = await Del(Path.join(targetDir, '**/*'), {
+			force: true // TODO Позже эту опцию удалить.
+		});
 
 		// Логирование удаленных файлов и директорий.
 		deleted.forEach(item => console.log);
 
-		// Создать новую структуру директорий на диске.
-		const directoryList: string[] = _.uniq(classList.map(cls => {
-			return Path.dirname(ClassName.toSourceFileName(cls.name, targetDir));
+		// Массив файлов классов и их имен.
+		const classFileList: {
+			name: string;
+			content: string
+		}[] = this.manager.classes.map(cls => ({
+			name: ClassName.toSourceFileName(cls.name, targetDir),
+			content: Formatter.prettyFormat(new ClassCode(cls).toString())
 		}));
+
+		// Создать новую структуру директорий на диске.
+		const directoryList: string[] = _.uniq(classFileList.map(({name, content}) => Path.dirname(name)));
 		for (let dir of directoryList) await MakeDir(dir);
 
 		// Записать файлы.
-		for (let cls of classList) {
-			const code = new ClassCode(cls);
-			const fileName = ClassName.toSourceFileName(cls.name, targetDir);
-			const fileContent = Formatter.prettyFormat(code.toString());
-			await writeFile(fileName, fileContent);
-		}
+		for (let classFile of classFileList) await writeFile(classFile.name, classFile.content);
 	}
 }

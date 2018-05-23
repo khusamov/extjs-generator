@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import * as Path from 'path';
 import Namespace from './Namespace';
 
 export interface IClassName {
@@ -81,7 +82,7 @@ export default class ClassName implements IClassName {
 			[].concat(rootPath ? rootPath : [])
 			.concat(name.path)
 			.concat(name.name)
-			.join('/')
+			.join(Path.sep)
 		);
 		return result.length ? result + '.js' : '';
 	}

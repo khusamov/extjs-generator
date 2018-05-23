@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import { Ext } from '../index';
+import { Ext } from '../../index';
 
 describe('Ext.ClassName', function() {
 	describe('Парсинг имени класса', function() {

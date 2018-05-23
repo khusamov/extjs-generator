@@ -33,7 +33,7 @@
     "@types/lodash": "^4.14.109",
     "@types/mkdirp-promise": "^5.0.0",
     "@types/mocha": "^5.2.0",
-    "@types/node": "^7.0.65",
+    "@types/node": "^10.1.2",
     "chai": "^4.1.2",
     "mocha": "^5.2.0",
     "ts-mocha": "^1.2.0",

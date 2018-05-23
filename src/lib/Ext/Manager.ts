@@ -8,6 +8,14 @@ export default class Manager {
 	private namespaces: Namespace[] = [];
 
 	/**
+	 * Список всех классов под управлением менеджера.
+	 * @returns {Class[]}
+	 */
+	get classes(): Class[] {
+		return [...this].reduce<Class[]>((result, ns: Namespace) => result.concat([...ns]), []);
+	}
+
+	/**
 	 * Количество пространств имен под управлением менеджера.
 	 * @returns {number}
 	 */

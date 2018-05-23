@@ -62,7 +62,7 @@ describe('Ext.ClassName', function() {
 		assert.deepEqual<string[]>(className.path, ['path1']);
 		assert.strictEqual<string>(className.name, 'ClassName');
 		assert.strictEqual<string>(className.text, 'Namespace.path1.ClassName');
-		assert.strictEqual<string>(className.sourceFileName, 'path1/ClassName.js');
+		assert.strictEqual<string>(className.sourceFileName, 'path1/ClassName.js'.split('/').join(Path.sep));
 	});
 	it('Создание имени с пространством имен', function() {
 		const className = new Ext.ClassName('Namespace.path1.ClassName', 'Namespace.path1');
@@ -71,6 +71,6 @@ describe('Ext.ClassName', function() {
 		assert.deepEqual<string[]>(className.path, []);
 		assert.strictEqual<string>(className.name, 'ClassName');
 		assert.strictEqual<string>(className.text, 'Namespace.path1.ClassName');
-		assert.strictEqual<string>(className.sourceFileName, 'path1/ClassName.js');
+		assert.strictEqual<string>(className.sourceFileName, 'path1/ClassName.js'.split('/').join(Path.sep));
 	});
 });

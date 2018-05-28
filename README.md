@@ -54,3 +54,23 @@ manager1Code.formatter = Formatter;
 
 ```
 
+
+
+
+Пример кода с созданием пакета
+------------------------------
+
+```typescript
+
+import { Ext, Code, Formatter } from 'khusamov-extjs-generator';
+
+(async () => {
+    const workspace = new Ext.Workspace('path/to/workspace');
+    await workspace.load();
+    const package1 = workspace.createPackage('eirc-pir-api');
+    // Создание и наполнение менеджера см. в предыдущем примере кода.
+    package1.manager = new Ext.Manager;
+    await package1.save();
+})();
+
+```

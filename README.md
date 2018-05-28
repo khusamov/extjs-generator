@@ -37,7 +37,6 @@ console.log(Formatter.prettyFormat(class1Code.toString()));
 
 // Вывод всего кода в директорию.
 const manager1Code = new Code.ManagerCode(manager1);
-manager1Code.formatter = Formatter;
 (async () => {
     await manager1Code.saveTo('path/to/dir');
     console.log('Файлы сохранены.');

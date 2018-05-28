@@ -75,4 +75,20 @@ export default class Namespace {
 	*[Symbol.iterator](): IterableIterator<Class> {
 		for (let ns of this.classes) yield ns;
 	}
+
+	/**
+	 * Отфильтровать классы в новое пространство имен с тем же именем и менеджером.
+	 * @param {Function} filterFn
+	 * @returns {Namespace}
+	 */
+	filter(filterFn: (cls: Class, index: number, classes: Class[]) => boolean): Namespace {
+		return (
+			this.classes
+				.filter(filterFn)
+				.reduce<Namespace>(
+					(filteredManager, ns) => filteredManager.add(ns),
+					new Namespace(this.name, this.manager)
+				)
+		);
+	}
 }

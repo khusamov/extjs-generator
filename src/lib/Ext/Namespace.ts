@@ -3,6 +3,7 @@ import Manager from './Manager';
 
 /**
  * Пространство имен.
+ * Пространство имен из себя представляет менеджер классов.
  */
 export default class Namespace {
 	/**

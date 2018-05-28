@@ -55,6 +55,10 @@ export default class Class extends ObjectNode {
 		}
 	}
 
+	get isOverride(): boolean {
+		return false;
+	}
+
 	/**
 	 * Конструктор класса.
 	 * Если указаны три аргумента, то аргумент namespaceOrConfig должен быть экземпляром класса Namespace.

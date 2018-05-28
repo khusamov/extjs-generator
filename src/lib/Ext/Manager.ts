@@ -2,7 +2,7 @@ import Namespace from './Namespace';
 import Class from './Class';
 
 /**
- * Менеджер пространств имен.
+ * Менеджер пространств имен и классов.
  */
 export default class Manager {
 	private namespaces: Namespace[] = [];

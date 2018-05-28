@@ -14,9 +14,9 @@ describe('Code.ClassCode', function() {
 					this.name = name;
 				}
 			},
-			eat: new JavaScript.ExpressionNode(undefined, `function(foodType) {
+			eat: JavaScript.FunctionNode.nameless`function(foodType) {
 				alert(this.name + " is eating: " + foodType);
-			}`)
+			}`
 		});
 
 		const personClassCode = new Code.ClassCode(personClass);
@@ -36,5 +36,5 @@ describe('Code.ClassCode', function() {
 				});
 			`)
 		);
-	})
+	});
 });

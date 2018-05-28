@@ -25,6 +25,10 @@ export default class Namespace {
 		return this.classes.length;
 	}
 
+	get hasClasses(): boolean {
+		return !!this.count;
+	}
+
 	get name(): string {
 		return this.text;
 	}

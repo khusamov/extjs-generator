@@ -95,4 +95,24 @@ describe('Manager', function() {
 		for (let className of classList) namespace1.add(new Ext.Class(className));
 		assert.deepEqual<string[]>(manager1.classes.map(cls => cls.name), classList);
 	});
+	it('Конвертация массива пространств имен менеджера методом map()', function() {
+		const manager1 = new Ext.Manager();
+		manager1.add(new Ext.Namespace('Namespace1'));
+		manager1.add(new Ext.Namespace('Namespace2'));
+		manager1.add(new Ext.Namespace('Namespace3'));
+		assert.deepEqual([...manager1].map(ns => ns.name), ['Namespace1', 'Namespace2', 'Namespace3']);
+	});
+	it('Фильтрация менеджера методом filter()', function() {
+		const manager1 = new Ext.Manager();
+		manager1.add(new Ext.Namespace('Namespace1'));
+		manager1.add(new Ext.Namespace('Namespace2'));
+		manager1.add(new Ext.Namespace('Namespace3'));
+		const filteredManager1 = manager1.filter(ns => ns.name === 'Namespace1' || ns.name === 'Namespace3');
+		assert.strictEqual<number>(filteredManager1.count, 2);
+		assert.deepEqual([...filteredManager1].map(ns => ns.name), ['Namespace1', 'Namespace3']);
+	});
+	it('Менеджер пространств имен со списком на входе конструктора', function() {
+		const manager1 = new Ext.Manager('Namespace1', 'Namespace2', 'Namespace3', 'Namespace4');
+		assert.deepEqual([...manager1].map(ns => ns.name), ['Namespace1', 'Namespace2', 'Namespace3', 'Namespace4']);
+	});
 });

@@ -64,9 +64,10 @@ const manager1Code = new Code.ManagerCode(manager1);
 import { Ext, Code, Formatter } from 'khusamov-extjs-generator';
 
 (async () => {
-    const workspace = new Ext.Workspace('path/to/workspace');
-    await workspace.load();
-    const package1 = workspace.createPackage('eirc-pir-api');
+    const workspace = new Ext.Workspace;
+    await workspace.load('path/to/workspace');
+    const package1 = new Ext.Package('eirc-pir-api');
+    workspace.add(package1);
     // Создание и наполнение менеджера см. в предыдущем примере кода.
     package1.manager = new Ext.Manager;
     await package1.save();

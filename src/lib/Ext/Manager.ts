@@ -37,21 +37,26 @@ export default class Manager {
 	/**
 	 * Добавить пространство имен.
 	 * Пространство не должно присутствовать в менеджере или пересекаться с имеющимися.
-	 * @param {Namespace} namespace
+	 * @param {string | Namespace} nameOrNamespace
 	 * @returns {Manager}
 	 */
-	add(namespace: Namespace): this {
-		const existsNamespace: boolean = !!this.get(namespace.text);
-		if (existsNamespace) {
-			throw new Error(`Пространство имен '${namespace.text}' уже присутствует в менеджере.`);
+	add(nameOrNamespace: string | Namespace): this {
+		const namespace: Namespace = (
+			nameOrNamespace instanceof Namespace
+				? nameOrNamespace :
+				new Namespace(nameOrNamespace)
+		);
+
+		if (this.has(namespace.name)) {
+			throw new Error(`Пространство имен '${namespace.name}' уже присутствует в менеджере.`);
 		}
 
 		const intersectedNamespace = this.namespaces.find(testedNamespace => (
-			testedNamespace.text.indexOf(namespace.text) === 0
-			|| namespace.text.indexOf(testedNamespace.text) === 0
+			testedNamespace.name.indexOf(namespace.name) === 0
+			|| namespace.name.indexOf(testedNamespace.name) === 0
 		));
 		if (intersectedNamespace) {
-			throw new Error(`Пространство имен '${namespace.text}' пересекается с '${intersectedNamespace.text}'.`);
+			throw new Error(`Пространство имен '${namespace.name}' пересекается с '${intersectedNamespace.name}'.`);
 		}
 
 		namespace.manager = this;

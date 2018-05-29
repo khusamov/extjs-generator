@@ -24,6 +24,17 @@ export default class Manager {
 	}
 
 	/**
+	 * Конструктор менеджера.
+	 * На вход можно подать список пространств имен, которые будут добавлены в менеджер.
+	 * @param {string | Namespace} namespaces
+	 */
+	constructor(...namespaces: (string | Namespace)[]) {
+		for (let namespace of namespaces.map(ns => ns instanceof Namespace ? ns : new Namespace(ns))) {
+			this.add(namespace);
+		}
+	}
+
+	/**
 	 * Добавить пространство имен.
 	 * Пространство не должно присутствовать в менеджере или пересекаться с имеющимися.
 	 * @param {Namespace} namespace

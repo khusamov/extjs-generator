@@ -81,6 +81,10 @@ export default class Manager {
 		);
 	}
 
+	has(name: string): boolean {
+		return !!this.get(name);
+	}
+
 	/**
 	 * Реализация итератора для менеджера пространств имен.
 	 * @returns {IterableIterator<Namespace>}

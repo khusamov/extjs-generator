@@ -8,7 +8,6 @@ import Manager from './Manager';
 import * as Fs from "fs";
 import * as Util from "util";
 import ManagerCode from '../Code/ManagerCode';
-import Class from './Class';
 
 const readFile = Util.promisify(Fs.readFile);
 const writeFile = Util.promisify(Fs.writeFile);
@@ -39,7 +38,7 @@ export default class Package {
 		return [pascalcase(this.name.split('-')[0])].concat(this.name.split('-').slice(1)).join('.');
 	}
 
-	constructor(public name: string, public workspace: Workspace) {}
+	constructor(public name: string, public workspace?: Workspace) {}
 
 	/**
 	 * Удаляет все файлы в директории пакета, если они есть.
@@ -62,28 +61,13 @@ export default class Package {
 			await MakeDir(dir);
 		}
 		// package.json и build.xml
-		const files = await Promise.all(
-			[{
-				from: Path.join(__dirname, 'package.build.xml'),
-				to: Path.join(this.dir, 'build.xml')
-			}, {
-				from: Path.join(__dirname, 'package.json'),
-				to: Path.join(this.dir, 'package.json')
-			}].map(async path => ({
-				path,
-				content: await readFile(path.from, {encoding: 'utf8'})
-			}))
-		);
-		const preparedFiles = files.map(file => _.merge(file, {
-			content: (
-				file.content
-					.replace(new RegExp('{{name}}', 'g'), this.name)
-					.replace(new RegExp('{{namespace}}', 'g'), this.namespace)
-			)
-		}));
-		for (let file of preparedFiles) {
-			await writeFile(file.path.to, file.content);
-		}
+		await this.writeConfigFiles(['name', 'namespace'], [{
+			from: 'package.build.xml',
+			to: 'build.xml'
+		}, {
+			from: 'package.json',
+			to: 'package.json'
+		}]);
 		// Сохранение классов в директории src и overrides.
 		const sourceClsManager = this.manager.map(ns => ns.filter(cls => !cls.isOverride)).filter(ns => ns.hasClasses);
 		const overrideClsManager = this.manager.map(ns => ns.filter(cls => cls.isOverride)).filter(ns => ns.hasClasses);
@@ -92,5 +76,36 @@ export default class Package {
 
 	}
 
-	private loadTemplateFile() {}
+	/**
+	 * Запись шаблонных файлов.
+	 * Файлы считываются с __dirname/from, записываются в this.dir/to
+	 * В каждом файле производится замена {{параметров}} на значения из this.
+	 * @param {object[]} fileMap
+	 * @param {string} fileMap.from
+	 * @param {string} fileMap.to
+	 * @param {string[]} names
+	 * @returns {Promise<void>}
+	 */
+	private async writeConfigFiles(names: string[], fileMap: {from: string, to: string}[]) {
+		const files = await Promise.all(
+			fileMap.map(file => ({
+				from: Path.join(__dirname, file.from),
+				to: Path.join(this.dir, file.to)
+			})).map(async path => ({
+				path,
+				content: await readFile(path.from, {encoding: 'utf8'})
+			}))
+		);
+		const preparedFiles = files.map(file => _.merge(file, {
+			content: (
+				names.reduce(
+					(content, paramName) => content.replace(new RegExp(`{{${paramName}}}`, 'g'), this[paramName]),
+					file.content
+				)
+			)
+		}));
+		for (let file of preparedFiles) {
+			await writeFile(Path.join(this.dir, file.path.to), file.content);
+		}
+	}
 }

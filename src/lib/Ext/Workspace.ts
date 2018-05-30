@@ -14,7 +14,7 @@ const readFile = Util.promisify(Fs.readFile);
  */
 export default class Workspace {
 	private config: object;
-	private packages: Package[];
+	private packages: Package[] = [];
 	public dir: string;
 	constructor() {}
 	async load(dir: string) {

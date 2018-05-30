@@ -1,12 +1,11 @@
-import { describe, it } from 'mocha';
-import { assert } from 'chai';
-
-import * as Os from 'os';
-import * as Path from 'path';
 import * as Fs from "fs";
 import * as Util from "util";
 import * as Del from 'del';
 
+import { describe, it } from 'mocha';
+import { assert } from 'chai';
+
+import { getTargetDir } from '../util';
 import { Ext, Code } from '../../index';
 
 const readFile = Util.promisify(Fs.readFile);
@@ -17,7 +16,7 @@ describe('ManagerCode', function() {
 		const namespace1 = new Ext.Namespace('Namespace1', manager1);
 		const class1 = new Ext.Class('Namespace1.Class1', namespace1);
 		const managerCode1 = new Code.ManagerCode(manager1);
-		const targetDir = Path.join(Os.tmpdir(), '@ManagerCode_TempDir');
+		const targetDir = getTargetDir('ManagerCodeTestDir');
 
 		await managerCode1.saveTo(targetDir);
 

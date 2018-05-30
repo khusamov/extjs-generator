@@ -22,6 +22,12 @@ export default class Workspace {
 		const configFilePath = Path.join(dir, 'workspace.json');
 		this.config = Json5.parse(await readFile(configFilePath, {encoding: 'utf8'}));
 	}
+
+	/**
+	 * Добавить пакет в рабочее пространство.
+	 * @param {Package} pkg
+	 * @returns {Workspace}
+	 */
 	add(pkg: Package): this {
 		pkg.workspace = this;
 		this.packages.push(pkg);

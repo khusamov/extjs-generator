@@ -89,11 +89,11 @@ export default class Package {
 	private async writeConfigFiles(names: string[], fileMap: {from: string, to: string}[]) {
 		const files = await Promise.all(
 			fileMap.map(file => ({
-				from: Path.join(__dirname, file.from),
-				to: Path.join(this.dir, file.to)
+				from: file.from,
+				to: file.to
 			})).map(async path => ({
 				path,
-				content: await readFile(path.from, {encoding: 'utf8'})
+				content: await readFile(Path.join(__dirname, 'fileTpl', path.from), {encoding: 'utf8'})
 			}))
 		);
 		const preparedFiles = files.map(file => _.merge(file, {

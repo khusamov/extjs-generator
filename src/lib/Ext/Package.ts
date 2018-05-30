@@ -22,8 +22,8 @@ export default class Package {
 	 */
 	manager: Manager;
 
-	sourceDir: 'src';
-	overrideDir: 'overrides';
+	sourceDir = 'src';
+	overrideDir = 'overrides';
 
 	get dir(): string {
 		return Path.join(this.workspace.dir, 'packages/local', this.name);

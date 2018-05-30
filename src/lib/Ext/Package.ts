@@ -1,12 +1,12 @@
 import * as _ from 'lodash';
 import * as Del from 'del';
 import * as Path from 'path';
-import MakeDir = require('mkdirp-promise');
-import * as pascalcase from 'pascalcase';
-import Workspace from './Workspace';
-import Manager from './Manager';
 import * as Fs from "fs";
 import * as Util from "util";
+import * as pascalcase from 'pascalcase';
+import MakeDir = require('mkdirp-promise');
+import Workspace from './Workspace';
+import Manager from './Manager';
 import ManagerCode from '../Code/ManagerCode';
 
 const readFile = Util.promisify(Fs.readFile);
@@ -48,19 +48,21 @@ export default class Package {
 	 * Внимание, классы override отделяются из общей кучи классов.
 	 */
 	async save() {
+		if (!this.workspace) throw new Error('Не определено рабочее пространство.');
+		if (!this.workspace.dir) throw new Error('Не определена директория рабочего пространства.');
+		if (!this.sourceDir) throw new Error('Не определена директория sourceDir.');
+		if (!this.overrideDir) throw new Error('Не определена директория overrideDir.');
+
+		const sourceDir = Path.join(this.dir, this.sourceDir), overrideDir = Path.join(this.dir, this.overrideDir);
 		// Очистить целевую директорию (удалить предыдущие файлы и директории).
 		const deleted = await Del(Path.join(this.dir, '**/*'), {
 			force: true // TODO Позже эту опцию удалить.
 		});
 		// Создание структуры директорий пакета.
-		for (let dir of [
-			this.dir,
-			this.overrideDir,
-			this.sourceDir
-		]) {
+		for (let dir of [this.dir, sourceDir, overrideDir]) {
 			await MakeDir(dir);
 		}
-		// package.json и build.xml
+		// Создание в директории пакета файлов: package.json и build.xml
 		await this.writeConfigFiles(['name', 'namespace'], [{
 			from: 'package.build.xml',
 			to: 'build.xml'
@@ -69,11 +71,12 @@ export default class Package {
 			to: 'package.json'
 		}]);
 		// Сохранение классов в директории src и overrides.
-		const sourceClsManager = this.manager.map(ns => ns.filter(cls => !cls.isOverride)).filter(ns => ns.hasClasses);
-		const overrideClsManager = this.manager.map(ns => ns.filter(cls => cls.isOverride)).filter(ns => ns.hasClasses);
-		await new ManagerCode(sourceClsManager).saveTo(Path.join(this.dir, this.sourceDir));
-		await new ManagerCode(overrideClsManager).saveTo(Path.join(this.dir, this.overrideDir));
-
+		if (this.manager) {
+			const sourceClsManager = this.manager.map(ns => ns.filter(cls => !cls.isOverride)).filter(ns => ns.hasClasses);
+			const overrideClsManager = this.manager.map(ns => ns.filter(cls => cls.isOverride)).filter(ns => ns.hasClasses);
+			await new ManagerCode(sourceClsManager).saveTo(sourceDir);
+			await new ManagerCode(overrideClsManager).saveTo(overrideDir);
+		}
 	}
 
 	/**

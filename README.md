@@ -66,11 +66,14 @@ import { Ext, Code, Formatter } from 'khusamov-extjs-generator';
 (async () => {
     const workspace = new Ext.Workspace;
     await workspace.load('path/to/workspace');
-    const package1 = new Ext.Package('eirc-pir-api');
-    workspace.add(package1);
+    const package1 = new Ext.Package('package1');
+    
     // Создание и наполнение менеджера см. в предыдущем примере кода.
+    // Все классы менеджера попадут в пакет package1.
     package1.manager = new Ext.Manager;
-    await package1.save();
+    
+    workspace.add(package1);
+    await workspace.save();
 })();
 
 ```

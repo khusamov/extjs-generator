@@ -2,28 +2,54 @@ import * as _ from 'lodash';
 import { ObjectNode, StringNode, ArrayNode } from 'khusamov-javascript-generator';
 import Namespace from './Namespace';
 import ClassName from './ClassName';
+import ClassNameValidError from './ClassNameValidError';
 import {
 	TStringOrStringArray,
 	isTStringOrStringArray,
 	isEmptyStringOrStringArray
 } from '../type/TStringOrStringArray';
 
+/**
+ * Класс.
+ */
 export default class Class extends ObjectNode {
+
+	static valueDefault = {
+		extend: '',
+		override: '',
+		alias: '',
+		xtype: '',
+		requires: [],
+		uses: []
+	};
+
 	namespace: Namespace | undefined;
+
+	/**
+	 * Родительский класс.
+	 * @returns {string | undefined}
+	 */
 	get extend(): string | undefined {
-		return this.has('extend') ? this.get<StringNode>('extend').value as string : undefined;
+		return this.get<StringNode>('extend').value as string;
 	}
-	set extend(parentClassName: string) {
-		if (_.isNil(parentClassName)) {
-			// Когда узел extend не определен, то в выходном коде его не должно быть, поэтому удаляем.
-			// Иными словами extend равен имени класса или должен отсутствовать.
-			this.remove(this.get('extend'));
-		} else {
-			if (!ClassName.isValid(parentClassName)) throw new Error(`Имя класса '${parentClassName}' ошибочное.`);
-			if (!this.has('extend')) this.add('extend', StringNode);
-			this.get<StringNode>('extend').value = parentClassName;
-		}
+	set extend(parentClassName: string | undefined) {
+		if (!ClassName.isValid(parentClassName)) throw new ClassNameValidError(parentClassName);
+		this.get<StringNode>('extend').value = parentClassName;
 	}
+
+	/**
+	 * Переопределение класса.
+	 * Если определен, то этот класс переопределяет члены указанного целевого класса..
+	 * @returns {string | undefined}
+	 */
+	get override(): string | undefined {
+		return this.get<StringNode>('override').value as string;
+	}
+	set override(parentClassName: string | undefined) {
+		if (!ClassName.isValid(parentClassName)) throw new ClassNameValidError(parentClassName);
+		this.get<StringNode>('override').value = parentClassName;
+	}
+
 	get requires(): ArrayNode {
 		if (!this.has('requires')) this.add('requires', ArrayNode);
 		return this.get<ArrayNode>('requires');
@@ -55,8 +81,12 @@ export default class Class extends ObjectNode {
 		}
 	}
 
+	/**
+	 * Является ли данный класс переопределением другого класса через свойство override или нет.
+	 * @returns {boolean}
+	 */
 	get isOverride(): boolean {
-		return false;
+		return _.isString(this.override) && !this.override.trim();
 	}
 
 	/**
@@ -72,7 +102,7 @@ export default class Class extends ObjectNode {
 		config: object = {}
 	) {
 		// Проверка имени класса.
-		if (!ClassName.isValid(name)) throw new Error(`Имя класса '${name}' ошибочное.`);
+		if (!ClassName.isValid(name)) throw new ClassNameValidError(name);
 
 		// Определение namespace и config в зависимости от количества аргументов.
 		let namespace: Namespace;
@@ -100,7 +130,7 @@ export default class Class extends ObjectNode {
 			throw new Error(`Класс '${name}' не входит в пространство имен '${namespace.text}'.`);
 		}
 
-		super(name, config);
+		super(name, _.merge(Class.valueDefault, config));
 
 		// Добавление класса в заданное пространство имен.
 		if (namespace) {
@@ -111,5 +141,10 @@ export default class Class extends ObjectNode {
 		this.initClass();
 	}
 
+	/**
+	 * Специальный метод для переопределения в потомках.
+	 * Должен содержать код инициализации класса.
+	 * Запускается после выполнения конструктора.
+	 */
 	initClass() {};
 }

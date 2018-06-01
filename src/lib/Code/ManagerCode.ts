@@ -14,7 +14,7 @@ const writeFile = Util.promisify(Fs.writeFile);
 
 export default class ManagerCode {
 	constructor(private manager: Manager) {}
-	async saveTo(targetDir: string, paths?: string[]): Promise<{
+	async saveTo(targetDir: string, paths?: {[key: string]: string}): Promise<{
 		/**
 		 * Удаленные файлы и директории из целевой папки targetDir.
 		 */

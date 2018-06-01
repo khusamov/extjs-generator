@@ -48,6 +48,28 @@ describe('Package', function() {
 		// Удаление временной директории фейкового рабочего пространства.
 		await Del(workspaceDir, {force: true});
 	});
+	it('Создание пакета с двумя классами из одного пространства имен', async function() {
+		// Создание временной директории фейкового рабочего пространства.
+		const workspaceDir = await createFakeWorkspace();
+		// Создание пустого пакета в фейковом рабочем пространстве.
+		const workspace1 = new Ext.Workspace;
+		await workspace1.load(workspaceDir);
+		const package1 = new Ext.Package('package1');
+		const manager = new Ext.Manager;
+		package1.manager = manager;
+		workspace1.add(package1);
+		// Создание классов
+		const namespace1 = new Ext.Namespace('Namespace1', manager);
+		const class1 = new Ext.Class('Namespace1.path1.Class1', namespace1);
+		const class2 = new Ext.Class('Namespace1.path1.Class2', namespace1);
+
+
+
+		// Сохранение файлов на диске.
+		await workspace1.save();
+		// Удаление временной директории фейкового рабочего пространства.
+		// await Del(workspaceDir, {force: true});
+	});
 });
 
 /**

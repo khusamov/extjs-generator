@@ -72,10 +72,20 @@ export default class Package {
 		}]);
 		// Сохранение классов в директории src и overrides.
 		if (this.manager) {
-			const sourceClsManager = this.manager.map(ns => ns.filter(cls => !cls.isOverride)).filter(ns => ns.hasClasses);
-			const overrideClsManager = this.manager.map(ns => ns.filter(cls => cls.isOverride)).filter(ns => ns.hasClasses);
-			await new ManagerCode(sourceClsManager).saveTo(sourceDir);
-			await new ManagerCode(overrideClsManager).saveTo(overrideDir);
+
+
+
+			// TODO Сделать добавление префикса (имя пространства имен) в sourceDir и overrideDir, если пространств больше одного
+
+			await new ManagerCode(this.manager).saveTo(
+				this.dir,
+				[...this.manager].map(ns => ns.name.split('.')[0]).reduce((result, namespaceName) => {
+					return _.merge(result, {
+						[namespaceName]: sourceDir,
+						[namespaceName + '.override']: overrideDir
+					});
+				}, {})
+			);
 		}
 	}
 

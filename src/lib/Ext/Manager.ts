@@ -98,25 +98,25 @@ export default class Manager {
 		for (let ns of this.namespaces) yield ns;
 	}
 
-	/**
-	 * Отфильтровать пространства имен в новый менеджер.
-	 * @param {Function} filterFn
-	 * @param {Namespace} filterFn.namespace
-	 * @returns {Manager}
-	 */
-	filter(filterFn: (namespace: Namespace, index: number, namespaces: Namespace[]) => boolean): Manager {
-		return (
-			this.namespaces
-				.filter(filterFn)
-				.reduce<Manager>((filteredManager, ns) => filteredManager.add(ns), new Manager())
-		);
-	}
-
-	map(filterFn: (namespace: Namespace, index: number, namespaces: Namespace[]) => Namespace): Manager {
-		return (
-			this.namespaces
-				.map<Namespace>(filterFn)
-				.reduce<Manager>((filteredManager, ns) => filteredManager.add(ns), new Manager())
-		);
-	}
+	// /**
+	//  * Отфильтровать пространства имен в новый менеджер.
+	//  * @param {Function} filterFn
+	//  * @param {Namespace} filterFn.namespace
+	//  * @returns {Manager}
+	//  */
+	// filter(filterFn: (namespace: Namespace, index: number, namespaces: Namespace[]) => boolean): Manager {
+	// 	return (
+	// 		this.namespaces
+	// 			.filter(filterFn)
+	// 			.reduce<Manager>((filteredManager, ns) => filteredManager.add(ns), new Manager())
+	// 	);
+	// }
+	//
+	// map(filterFn: (namespace: Namespace, index: number, namespaces: Namespace[]) => Namespace): Manager {
+	// 	return (
+	// 		this.namespaces
+	// 			.map<Namespace>(filterFn)
+	// 			.reduce<Manager>((filteredManager, ns) => filteredManager.add(ns), new Manager())
+	// 	);
+	// }
 }

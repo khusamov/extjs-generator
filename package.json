@@ -34,18 +34,18 @@
     "@types/lodash": "^4.14.109",
     "@types/mkdirp-promise": "^5.0.0",
     "@types/mocha": "^5.2.0",
-    "@types/node": "^10.1.2",
+    "@types/node": "^10.3.0",
     "chai": "^4.1.2",
     "mocha": "^5.2.0",
     "ts-mocha": "^1.2.0",
     "ts-node": "^6.0.5",
     "tslint": "^5.10.0",
-    "typescript": "^2.8.3"
+    "typescript": "^2.9.1"
   },
   "dependencies": {
     "del": "^3.0.0",
     "json5": "^1.0.1",
-    "khusamov-javascript-generator": "^1.7.0",
+    "khusamov-javascript-generator": "^1.8.1",
     "lodash": "^4.17.4",
     "mkdirp-promise": "^5.0.1",
     "pascalcase": "^0.1.1"

@@ -28,4 +28,21 @@ describe('ManagerCode', function() {
 		// Удаляем временную директорию.
 		await Del(targetDir, {force: true});
 	});
+
+	describe('Проверка, не перезаписывается ли Class.valueDefault', function() {
+		it('ObjectNode', function() {
+			const node1 = new JavaScript.ObjectNode('node1', {
+				property1: 'value of property1'
+			});
+			const node2 = new JavaScript.ObjectNode('node2');
+			assert.isUndefined(node2.get('property1'));
+		});
+		it('Ext.Class', function() {
+			const class1 = new Ext.Class('Namespace1.Class1', {
+				property1: 'value of property1'
+			});
+			const class2 = new Ext.Class('Namespace2.Class2');
+			assert.isUndefined(class2.get('property1'));
+		});
+	});
 });

@@ -132,7 +132,7 @@ export default class Class extends ObjectNode {
 			throw new Error(`Класс '${name}' не входит в пространство имен '${namespace.text}'.`);
 		}
 
-		super(name, _.merge(Class.valueDefault, config));
+		super(name, _.merge({}, Class.valueDefault, config));
 
 		// Добавление класса в заданное пространство имен.
 		if (namespace) {

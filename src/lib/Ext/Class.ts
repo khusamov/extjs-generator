@@ -33,7 +33,9 @@ export default class Class extends ObjectNode {
 		return this.get<StringNode>('extend').value as string;
 	}
 	set extend(parentClassName: string | undefined) {
-		if (!ClassName.isValid(parentClassName)) throw new ClassNameValidError(parentClassName);
+		if (_.isString(parentClassName) && !ClassName.isValid(parentClassName)) {
+			throw new ClassNameValidError(parentClassName);
+		}
 		this.get<StringNode>('extend').value = parentClassName;
 	}
 

@@ -51,13 +51,17 @@ export default class Namespace {
 	add(cls: Class): this {
 		const namespaceHasClass = !!this.classes.find(testedClass => testedClass === cls);
 		if (namespaceHasClass) {
-			throw new Error(`Попытка дважды добавить класс '${cls.name}' в пространство имен '${this.text}'.`);
+			throw new Error(`Попытка дважды добавить класс '${cls.name}' в пространство имен '${this.name}'.`);
+		}
+		const namespaceHasClassByName = !!this.classes.find(testedClass => testedClass.name === cls.name);
+		if (namespaceHasClassByName) {
+			throw new Error(`В пространстве имен '${this.name}' уже имеется класс с именем '${cls.name}'.`);
 		}
 		if (cls.namespace && cls.namespace !== this) {
-			throw new Error(`Попытка добавить в пространство имен '${this.text}' класс '${cls.name}' из пространства имен '${cls.namespace.text}'.`);
+			throw new Error(`Попытка добавить в пространство имен '${this.name}' класс '${cls.name}' из пространства имен '${cls.namespace.name}'.`);
 		}
 		if (cls.name.indexOf(this.text) !== 0) {
-			throw new Error(`Класс '${cls.name}' не входит в пространство имен '${this.text}'.`);
+			throw new Error(`Класс '${cls.name}' не входит в пространство имен '${this.name}'.`);
 		}
 		cls.namespace = this;
 		this.classes.push(cls);

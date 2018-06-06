@@ -64,7 +64,15 @@ describe('Package', function() {
 		});
 	});
 	describe('Создание пакета с несколькими классами из одного пространства имен', function() {
-		let workspaceDir, package1;
+		const classInfoList = [
+			'Namespace1.path1.Class1',
+			'Namespace1.path1.Class2',
+			'Namespace1.path2.Class3'
+		].map(className => ({
+			className,
+			classPartFilePath: className.split('.').splice(1).join('/') + '.js'
+		}));
+		let workspaceDir;
 		before(async () => {
 			// Создание временной директории фейкового рабочего пространства.
 			workspaceDir = await createFakeWorkspaceDir();
@@ -73,37 +81,26 @@ describe('Package', function() {
 			// Создание классов в пакете package1.
 			const package1Manager = workspace1.get('package1').manager;
 			const namespace1 = new Ext.Namespace('Namespace1', package1Manager);
-			const class1 = new Ext.Class('Namespace1.path1.Class1', namespace1);
-			const class2 = new Ext.Class('Namespace1.path1.Class2', namespace1);
-			const class3 = new Ext.Class('Namespace1.path2.Class3', namespace1);
+			for (let classInfo of classInfoList) namespace1.add(new Ext.Class(classInfo.className));
 			// Сохранение рабочего пространства (а точнее лишь одного пакета с тремя классами) на диске.
 			await workspace1.save();
 		});
 		after(async () => {
 			// Удаление временной директории фейкового рабочего пространства.
-			// await Del(workspaceDir, {force: true});
+			await Del(workspaceDir, {force: true});
 		});
 		it('Классы должны находится на своих местах в директории пакета', async function() {
-			for (let classPartFilePath of [
-				'path1/Class1.js',
-				'path1/Class2.js',
-				'path2/Class3.js'
-			]) {
-				const classFilePath = Path.join(workspaceDir, 'packages/local', 'package1/src', classPartFilePath);
+			for (let classInfo of classInfoList) {
+				const classFilePath = Path.join(workspaceDir, 'packages/local', 'package1/src', classInfo.classPartFilePath);
 				const classFileStat = await stat(classFilePath);
 				assert.isTrue(classFileStat.isFile(), `Файл '${classFilePath}' должен существовать`);
 			}
 		});
 		it('Содержимое файлов классов должно присутствовать', async function() {
-			for (let classPartFilePath of [
-				'path1/Class1.js',
-				'path1/Class2.js',
-				'path2/Class3.js'
-			]) {
-				const classFilePath = Path.join(workspaceDir, 'packages/local', 'package1/src', classPartFilePath);
+			for (let classInfo of classInfoList) {
+				const classFilePath = Path.join(workspaceDir, 'packages/local', 'package1/src', classInfo.classPartFilePath);
 				const classFile = await readFile(classFilePath, {encoding: 'utf8'});
-				const className = 'Namespace1.' + classPartFilePath.replace('.js', '').replace('/', '.');
-				assert.strictEqual<string>(classFile.trim(), `Ext.define('${className}', {});`);
+				assert.strictEqual<string>(classFile.trim(), `Ext.define('${classInfo.className}', {});`);
 			}
 		});
 	});

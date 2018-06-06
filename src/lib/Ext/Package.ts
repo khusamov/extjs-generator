@@ -78,8 +78,8 @@ export default class Package {
 						// Классы начинающиеся на Namespace.override записываются в каталог <package-dir>/override.
 						// Если пространств имен больше одного, то в имена директорий встраиваются имена пространства имен:
 						// <package-dir>/<Namespace>/src и <package-dir>/<Namespace>/override.
-						[namespaceName]: this.manager.count > 1 ? this.sourceDir : Path.join(namespaceName, this.sourceDir),
-						[namespaceName + '.override']: this.manager.count > 1 ? this.overrideDir : Path.join(namespaceName, this.overrideDir)
+						[namespaceName]: this.manager.count > 1 ? Path.join(namespaceName, this.sourceDir) : this.sourceDir,
+						[namespaceName + '.override']: this.manager.count > 1 ? Path.join(namespaceName, this.overrideDir) : this.overrideDir
 					});
 				}, {})
 			});

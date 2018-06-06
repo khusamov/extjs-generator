@@ -19,7 +19,7 @@ describe('Package', function() {
 		let workspaceDir, package1;
 		before(async () => {
 			// Создание временной директории фейкового рабочего пространства.
-			workspaceDir = await createFakeWorkspace();
+			workspaceDir = await createFakeWorkspaceDir();
 			// Создание пустого пакета в фейковом рабочем пространстве.
 			const workspace1 = await createWorkspaceWithOnePackage(workspaceDir);
 			await workspace1.save();
@@ -65,7 +65,7 @@ describe('Package', function() {
 		let workspaceDir, package1;
 		before(async () => {
 			// Создание временной директории фейкового рабочего пространства.
-			workspaceDir = await createFakeWorkspace();
+			workspaceDir = await createFakeWorkspaceDir();
 			// Создание пустого пакета в фейковом рабочем пространстве.
 			const workspace1 = await createWorkspaceWithOnePackage(workspaceDir);
 			// Создание классов в пакете package1.
@@ -91,7 +91,7 @@ describe('Package', function() {
  * Вспомогательная функция.
  * Для создания фейкового рабочего пространства ExtJS-проекта.
  */
-async function createFakeWorkspace(): Promise<string> {
+async function createFakeWorkspaceDir(): Promise<string> {
 	const workspaceDir = getTargetDir('FakeWorkspaceDir');
 	await MakeDir(workspaceDir);
 	const workspaceConfigFilename = {

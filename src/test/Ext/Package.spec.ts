@@ -132,12 +132,13 @@ describe('Package', function() {
 					if (package1Manager.has(namespaceName)) {
 						namespace = package1Manager.get(namespaceName);
 					} else {
+						// Создание пространства имен, если такового не нашлось в менеджере.
 						namespace = new Ext.Namespace(namespaceName);
 						package1Manager.add(namespace);
 					}
 					namespace.add(new Ext.Class(classInfo.className));
 				}
-				// Сохранение рабочего пространства (а точнее лишь одного пакета с тремя классами) на диске.
+				// Сохранение рабочего пространства (пакет и классы из него) на диске.
 				await workspace1.save();
 			});
 			after(async () => {

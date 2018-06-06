@@ -52,8 +52,8 @@ describe('Package', function() {
 			it('Конфигурационные файлы должны быть созданы', async function() {
 				const package1BuildXmlFileStat = await stat(package1BuildXmlFilePath);
 				const package1PackageJsonFileStat = await stat(package1PackageJsonFilePath);
-				assert.isTrue(package1BuildXmlFileStat.isFile(), 'Файл build.xml должен существовать и быть директорией');
-				assert.isTrue(package1PackageJsonFileStat.isFile(), 'Файл package.json должен существовать и быть директорией');
+				assert.isTrue(package1BuildXmlFileStat.isFile(), 'Файл build.xml должен существовать');
+				assert.isTrue(package1PackageJsonFileStat.isFile(), 'Файл package.json должен существовать');
 			});
 			it('Конфигурационные файлы должны содержать имя пакета', async function() {
 				const package1BuildXmlFile = await readFile(package1BuildXmlFilePath, {encoding: 'utf8'});
@@ -63,7 +63,7 @@ describe('Package', function() {
 			});
 		});
 	});
-	describe('Создание пакета с двумя классами из одного пространства имен', function() {
+	describe('Создание пакета с несколькими классами из одного пространства имен', function() {
 		let workspaceDir, package1;
 		before(async () => {
 			// Создание временной директории фейкового рабочего пространства.
@@ -83,8 +83,28 @@ describe('Package', function() {
 			// Удаление временной директории фейкового рабочего пространства.
 			// await Del(workspaceDir, {force: true});
 		});
-		it('fdsfds', function() {
-
+		it('Классы должны находится на своих местах в директории пакета', async function() {
+			for (let classPartFilePath of [
+				'path1/Class1.js',
+				'path1/Class2.js',
+				'path2/Class3.js'
+			]) {
+				const classFilePath = Path.join(workspaceDir, 'packages/local', 'package1/src', classPartFilePath);
+				const classFileStat = await stat(classFilePath);
+				assert.isTrue(classFileStat.isFile(), `Файл '${classFilePath}' должен существовать`);
+			}
+		});
+		it('Содержимое файлов классов должно присутствовать', async function() {
+			for (let classPartFilePath of [
+				'path1/Class1.js',
+				'path1/Class2.js',
+				'path2/Class3.js'
+			]) {
+				const classFilePath = Path.join(workspaceDir, 'packages/local', 'package1/src', classPartFilePath);
+				const classFile = await readFile(classFilePath, {encoding: 'utf8'});
+				const className = 'Namespace1.' + classPartFilePath.replace('.js', '').replace('/', '.');
+				assert.strictEqual<string>(classFile.trim(), `Ext.define('${className}', {});`);
+			}
 		});
 	});
 });

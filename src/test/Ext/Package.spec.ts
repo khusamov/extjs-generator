@@ -16,12 +16,14 @@ const stat = Util.promisify(Fs.stat);
 
 describe('Package', function() {
 	describe('Создание пустого пакета', function() {
-		let workspaceDir, package1;
+		let workspaceDir: string, package1: Ext.Package;
 		before(async () => {
 			// Создание временной директории фейкового рабочего пространства.
 			workspaceDir = await createFakeWorkspaceDir();
-			// Создание пустого пакета в фейковом рабочем пространстве.
-			const workspace1 = await createWorkspaceWithOnePackage(workspaceDir);
+			// Загрузка рабочего пространства и создание одного пакета.
+			const workspace1 = await loadWorkspaceAndCreateOnePackage(workspaceDir);
+			package1 = workspace1.get('package1');
+			// Сохранение рабочего пространства (а точнее лишь одного пакета) на диске.
 			await workspace1.save();
 		});
 		after(async () => {
@@ -66,15 +68,15 @@ describe('Package', function() {
 		before(async () => {
 			// Создание временной директории фейкового рабочего пространства.
 			workspaceDir = await createFakeWorkspaceDir();
-			// Создание пустого пакета в фейковом рабочем пространстве.
-			const workspace1 = await createWorkspaceWithOnePackage(workspaceDir);
+			// Загрузка рабочего пространства и создание одного пакета.
+			const workspace1 = await loadWorkspaceAndCreateOnePackage(workspaceDir);
 			// Создание классов в пакете package1.
 			const package1Manager = workspace1.get('package1').manager;
 			const namespace1 = new Ext.Namespace('Namespace1', package1Manager);
 			const class1 = new Ext.Class('Namespace1.path1.Class1', namespace1);
 			const class2 = new Ext.Class('Namespace1.path1.Class2', namespace1);
 			const class3 = new Ext.Class('Namespace1.path2.Class3', namespace1);
-			// Сохранение файлов на диске.
+			// Сохранение рабочего пространства (а точнее лишь одного пакета с тремя классами) на диске.
 			await workspace1.save();
 		});
 		after(async () => {
@@ -88,7 +90,7 @@ describe('Package', function() {
 });
 
 /**
- * Создание фейкового рабочего пространства ExtJS-проекта.
+ * Создание директории фейкового рабочего пространства ExtJS-проекта.
  * В директории создается конфигурационный файл workspace.json.
  * Вспомогательная функция.
  * @returns {Promise<string>}
@@ -106,17 +108,18 @@ async function createFakeWorkspaceDir(): Promise<string> {
 }
 
 /**
- * Создание рабочего пространства с одним пустым пакетом.
+ * Загрузка рабочего пространства и создание одного пустого пакета в нем.
  * Вспомогательная функция.
  * @param {string} workspaceDir
  * @param {string} packageName
  * @returns {Promise<Workspace>}
  */
-async function createWorkspaceWithOnePackage(workspaceDir: string, packageName: string = 'package1'): Promise<Ext.Workspace> {
+async function loadWorkspaceAndCreateOnePackage(workspaceDir: string, packageName: string = 'package1'): Promise<Ext.Workspace> {
+	// Создание и загрузка рабочего пространства.
 	const sampleWorkspace = new Ext.Workspace;
 	await sampleWorkspace.load(workspaceDir);
+	// Создание пакета, добавление его в рабочее пространство.
 	const samplePackage = new Ext.Package(packageName);
-	const manager = new Ext.Manager;
 	samplePackage.manager = new Ext.Manager;
 	sampleWorkspace.add(samplePackage);
 	return sampleWorkspace;

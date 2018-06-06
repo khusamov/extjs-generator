@@ -88,24 +88,26 @@ describe('Package', function() {
 });
 
 /**
+ * Создание фейкового рабочего пространства ExtJS-проекта.
+ * В директории создается конфигурационный файл workspace.json.
  * Вспомогательная функция.
- * Для создания фейкового рабочего пространства ExtJS-проекта.
+ * @returns {Promise<string>}
  */
 async function createFakeWorkspaceDir(): Promise<string> {
 	const workspaceDir = getTargetDir('FakeWorkspaceDir');
 	await MakeDir(workspaceDir);
-	const workspaceConfigFilename = {
+	const workspaceConfigFilePath = {
 		from: Path.join(__dirname, 'workspace.json'),
 		to: Path.join(workspaceDir, 'workspace.json')
 	};
-	const workspaceConfig = await readFile(workspaceConfigFilename.from, {encoding: 'utf8'});
-	await writeFile(workspaceConfigFilename.to, workspaceConfig);
+	const workspaceConfig = await readFile(workspaceConfigFilePath.from, {encoding: 'utf8'});
+	await writeFile(workspaceConfigFilePath.to, workspaceConfig);
 	return workspaceDir;
 }
 
 /**
- * Вспомогательная функция.
  * Создание рабочего пространства с одним пустым пакетом.
+ * Вспомогательная функция.
  * @param {string} workspaceDir
  * @param {string} packageName
  * @returns {Promise<Workspace>}

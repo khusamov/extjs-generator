@@ -53,15 +53,13 @@ export default class Package {
 		if (!this.sourceDir) throw new Error('Не определена директория sourceDir.');
 		if (!this.overrideDir) throw new Error('Не определена директория overrideDir.');
 
-		const sourceDir = Path.join(this.dir, this.sourceDir), overrideDir = Path.join(this.dir, this.overrideDir);
 		// Очистить целевую директорию (удалить предыдущие файлы и директории).
 		const deleted = await Del(Path.join(this.dir, '**/*'), {
 			force: true // TODO Позже эту опцию удалить.
 		});
 		// Создание структуры директорий пакета.
-		for (let dir of [this.dir, sourceDir, overrideDir]) {
-			await MakeDir(dir);
-		}
+		const sourceDirPath = Path.join(this.dir, this.sourceDir), overrideDirPath = Path.join(this.dir, this.overrideDir);
+		for (let dir of [this.dir, sourceDirPath, overrideDirPath]) await MakeDir(dir);
 		// Создание в директории пакета файлов: package.json и build.xml
 		await this.writeConfigFiles(['name', 'namespace'], [{
 			from: 'package.build.xml',
@@ -70,22 +68,21 @@ export default class Package {
 			from: 'package.json',
 			to: 'package.json'
 		}]);
-		// Сохранение классов в директории src и overrides.
+		// Сохранение классов в директории src (sourceDir) и overrides (overrideDir).
 		if (this.manager) {
-
-
-
-			// TODO Сделать добавление префикса (имя пространства имен) в sourceDir и overrideDir, если пространств больше одного
-
-			await new ManagerCode(this.manager).saveTo(
-				this.dir,
-				[...this.manager].map(ns => ns.name.split('.')[0]).reduce((result, namespaceName) => {
+			await new ManagerCode(this.manager).saveTo(this.dir, {
+				del: false,
+				paths: [...this.manager].map(ns => ns.name).reduce((result, namespaceName) => {
 					return _.merge(result, {
-						[namespaceName]: sourceDir,
-						[namespaceName + '.override']: overrideDir
+						// Классы записываются в каталог <package-dir>/src.
+						// Классы начинающиеся на Namespace.override записываются в каталог <package-dir>/override.
+						// Если пространств имен больше одного, то в имена директорий встраиваются имена пространства имен:
+						// <package-dir>/<Namespace>/src и <package-dir>/<Namespace>/override.
+						[namespaceName]: this.manager.count > 1 ? this.sourceDir : Path.join(namespaceName, this.sourceDir),
+						[namespaceName + '.override']: this.manager.count > 1 ? this.overrideDir : Path.join(namespaceName, this.overrideDir)
 					});
 				}, {})
-			);
+			});
 		}
 	}
 

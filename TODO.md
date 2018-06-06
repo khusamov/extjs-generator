@@ -1,4 +1,5 @@
-
+TODO
+====
 
 
 
@@ -27,3 +28,8 @@ Package.save()
 
 
 
+Перейти от имен вида Ext.data.Model к именам вида ExtDataModel.
+    Этот пункт пока под вопросом.
+    Почему надо перейти?
+        К примеру, в JSDoc не поддерживается такой тип @returns {Promise<Ext.Workspace>}, 
+        почему то не видит Ext.Workspace, но видит Workspace.

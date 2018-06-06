@@ -15,18 +15,13 @@ const writeFile = Util.promisify(Fs.writeFile);
 const stat = Util.promisify(Fs.stat);
 
 describe('Package', function() {
-
 	describe('Создание пустого пакета', function() {
 		let workspaceDir, package1;
 		before(async () => {
 			// Создание временной директории фейкового рабочего пространства.
 			workspaceDir = await createFakeWorkspace();
 			// Создание пустого пакета в фейковом рабочем пространстве.
-			const workspace1 = new Ext.Workspace;
-			await workspace1.load(workspaceDir);
-			package1 = new Ext.Package('package1');
-			package1.manager = new Ext.Manager;
-			workspace1.add(package1);
+			const workspace1 = await createWorkspaceWithOnePackage(workspaceDir);
 			await workspace1.save();
 		});
 		after(async () => {
@@ -66,66 +61,35 @@ describe('Package', function() {
 			});
 		});
 	});
+	describe('Создание пакета с двумя классами из одного пространства имен', function() {
+		let workspaceDir, package1;
+		before(async () => {
+			// Создание временной директории фейкового рабочего пространства.
+			workspaceDir = await createFakeWorkspace();
+			// Создание пустого пакета в фейковом рабочем пространстве.
+			const workspace1 = await createWorkspaceWithOnePackage(workspaceDir);
+			// Создание классов в пакете package1.
+			const package1Manager = workspace1.get('package1').manager;
+			const namespace1 = new Ext.Namespace('Namespace1', package1Manager);
+			const class1 = new Ext.Class('Namespace1.path1.Class1', namespace1);
+			const class2 = new Ext.Class('Namespace1.path1.Class2', namespace1);
+			const class3 = new Ext.Class('Namespace1.path2.Class3', namespace1);
+			// Сохранение файлов на диске.
+			await workspace1.save();
+		});
+		after(async () => {
+			// Удаление временной директории фейкового рабочего пространства.
+			// await Del(workspaceDir, {force: true});
+		});
+		it('fdsfds', function() {
 
-	// it('Создание пустого пакета', async function() {
-	// 	// Создание временной директории фейкового рабочего пространства.
-	// 	const workspaceDir = await createFakeWorkspace();
-	// 	// Создание пустого пакета в фейковом рабочем пространстве.
-	// 	const workspace1 = new Ext.Workspace;
-	// 	await workspace1.load(workspaceDir);
-	// 	const package1 = new Ext.Package('package1');
-	// 	package1.manager = new Ext.Manager;
-	// 	workspace1.add(package1);
-	// 	await workspace1.save();
-	// 	// Проверка, создан ли пакет или нет.
-	// 	const package1DirStat = await stat(Path.join(workspaceDir, 'packages/local', 'package1'));
-	// 	assert.isTrue(package1DirStat.isDirectory(), 'Путь к пакету должен существовать и быть директорией');
-	// 	// Проверка, созданы ли директории пакета или нет.
-	// 	const package1SourceDirStat = await stat(Path.join(workspaceDir, 'packages/local', 'package1', package1.sourceDir));
-	// 	const package1OverrideDirStat = await stat(Path.join(workspaceDir, 'packages/local', 'package1', package1.overrideDir));
-	// 	assert.isTrue(package1SourceDirStat.isDirectory(), 'Путь sourceDir должен существовать и быть директорией');
-	// 	assert.isTrue(package1OverrideDirStat.isDirectory(), 'Путь overrideDir должен существовать и быть директорией');
-	// 	// Проверка, созданы ли конфигурационные файлы пакета или нет.
-	// 	const package1BuildXmlFilePath = Path.join(workspaceDir, 'packages/local', 'package1', 'build.xml');
-	// 	const package1PackageJsonFilePath = Path.join(workspaceDir, 'packages/local', 'package1', 'package.json');
-	// 	const package1BuildXmlFileStat = await stat(package1BuildXmlFilePath);
-	// 	const package1PackageJsonFileStat = await stat(package1PackageJsonFilePath);
-	// 	assert.isTrue(package1BuildXmlFileStat.isFile(), 'Файл build.xml должен существовать и быть директорией');
-	// 	assert.isTrue(package1PackageJsonFileStat.isFile(), 'Файл package.json должен существовать и быть директорией');
-	// 	// Проверка, содержат ли конфигурационные файлы имя пакета или нет.
-	// 	const package1BuildXmlFile = await readFile(package1BuildXmlFilePath, {encoding: 'utf8'});
-	// 	const package1PackageJsonFile = await readFile(package1PackageJsonFilePath, {encoding: 'utf8'});
-	// 	assert.notStrictEqual<number>(package1BuildXmlFile.indexOf('package1'), -1);
-	// 	assert.notStrictEqual<number>(package1PackageJsonFile.indexOf('package1'), -1);
-	// 	// Удаление временной директории фейкового рабочего пространства.
-	// 	await Del(workspaceDir, {force: true});
-	// });
-	it('Создание пакета с двумя классами из одного пространства имен', async function() {
-		// Создание временной директории фейкового рабочего пространства.
-		const workspaceDir = await createFakeWorkspace();
-		// Создание пустого пакета в фейковом рабочем пространстве.
-		const workspace1 = new Ext.Workspace;
-		await workspace1.load(workspaceDir);
-		const package1 = new Ext.Package('package1');
-		const manager = new Ext.Manager;
-		package1.manager = manager;
-		workspace1.add(package1);
-		// Создание классов
-		const namespace1 = new Ext.Namespace('Namespace1', manager);
-		const class1 = new Ext.Class('Namespace1.path1.Class1', namespace1);
-		const class2 = new Ext.Class('Namespace1.path1.Class2', namespace1);
-
-
-
-		// Сохранение файлов на диске.
-		await workspace1.save();
-		// Удаление временной директории фейкового рабочего пространства.
-		// await Del(workspaceDir, {force: true});
+		});
 	});
 });
 
 /**
- * Вспомогательная функция для создания фейкового рабочего пространства ExtJS-проекта.
+ * Вспомогательная функция.
+ * Для создания фейкового рабочего пространства ExtJS-проекта.
  */
 async function createFakeWorkspace(): Promise<string> {
 	const workspaceDir = getTargetDir('FakeWorkspaceDir');
@@ -137,4 +101,21 @@ async function createFakeWorkspace(): Promise<string> {
 	const workspaceConfig = await readFile(workspaceConfigFilename.from, {encoding: 'utf8'});
 	await writeFile(workspaceConfigFilename.to, workspaceConfig);
 	return workspaceDir;
+}
+
+/**
+ * Вспомогательная функция.
+ * Создание рабочего пространства с одним пустым пакетом.
+ * @param {string} workspaceDir
+ * @param {string} packageName
+ * @returns {Promise<Workspace>}
+ */
+async function createWorkspaceWithOnePackage(workspaceDir: string, packageName: string = 'package1'): Promise<Ext.Workspace> {
+	const sampleWorkspace = new Ext.Workspace;
+	await sampleWorkspace.load(workspaceDir);
+	const samplePackage = new Ext.Package(packageName);
+	const manager = new Ext.Manager;
+	samplePackage.manager = new Ext.Manager;
+	sampleWorkspace.add(samplePackage);
+	return sampleWorkspace;
 }

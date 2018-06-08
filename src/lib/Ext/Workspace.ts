@@ -3,6 +3,7 @@ import * as Path from 'path';
 import * as Util from 'util';
 import * as Json5 from 'json5';
 import Package from './Package';
+import Class from './Class';
 
 const readFile = Util.promisify(Fs.readFile);
 
@@ -33,7 +34,25 @@ export default class Workspace {
 		this.packages.push(pkg);
 		return this;
 	}
+
 	async save() {
 		await Promise.all(this.packages.map(pkg => pkg.save()));
+	}
+
+	/**
+	 * Получить пакет по его имени.
+	 * @param {string} packageName
+	 * @returns {Package | undefined}
+	 */
+	get(packageName: string): Package | undefined {
+		return this.packages.find(pkg => pkg.name === 'package1');
+	}
+
+	/**
+	 * Реализация итератора для рабочего пространства.
+	 * @returns {IterableIterator<Package>}
+	 */
+	*[Symbol.iterator](): IterableIterator<Package> {
+		for (let pkg of this.packages) yield pkg;
 	}
 }

@@ -18,6 +18,11 @@ describe('ManagerCode', function() {
 		// После теста удаляем временную директорию.
 		after(async () => await Del(targetDir, {force: true}));
 		it('Запись класса в файл', async function() {
+
+			// TODO Избавиться от странного сообщения в этом тесте.
+			// No parser and no filepath given, using 'babylon' the parser now but this will throw an error in the future.
+			// Please specify a parser or a filepath so one can be inferred.
+
 			// Создаем менеджер с кодом.
 			const manager1 = new Ext.Manager();
 			const namespace1 = new Ext.Namespace('Namespace1', manager1);

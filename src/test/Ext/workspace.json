@@ -15,8 +15,7 @@
       "${workspace.dir}/packages"
     ],
     "extract": [
-      "${workspace.dir}/node_modules/infogorod_w_extjs_common/packages/extra",
-      "${workspace.dir}/node_modules/infogorod_w_extjs_common/packages/local"
+      "${workspace.dir}/packages/remote"
     ]
   }
 }

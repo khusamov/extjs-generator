@@ -27,6 +27,9 @@ export function isImplementsIClassName(value: any): value is IClassName {
 
 /**
  * Класс для работы с именами классов.
+ * Имя класса состоит из: пространства имен, пути (пакеты), локальное имя класса.
+ * Все части класса разделены точкой.
+ * Например: Namespace1.path1.path2.path3.Class1.
  */
 export default class ClassName implements IClassName {
 

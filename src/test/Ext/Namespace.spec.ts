@@ -3,28 +3,31 @@ import { assert } from 'chai';
 import { Ext } from '../../index';
 
 describe('Namespace', function() {
-	it('Проверка пространства имен на валидность', function() {
+	it('Проверка имени пространства имен на валидность', function() {
 		assert.isTrue(Ext.Namespace.isValid('Namespace'));
 		assert.isTrue(Ext.Namespace.isValid('NamespaceNamespace'));
 		assert.isTrue(Ext.Namespace.isValid('NamespaceNamespaceNamespace'));
 		assert.isTrue(Ext.Namespace.isValid('Namespace321321'));
+		assert.isFalse(Ext.Namespace.isValid('Name space'));
 		assert.isFalse(Ext.Namespace.isValid('namespace'));
 		assert.isFalse(Ext.Namespace.isValid('Namespace_'));
 		assert.isFalse(Ext.Namespace.isValid('Namespace_Namespace'));
+		assert.isFalse(Ext.Namespace.isValid('Namespace.path1.path2'));
+		assert.isFalse(Ext.Namespace.isValid(' Namespace. path1.path2'));
 	});
 
-	it('create', function() {
+	it('Создание пустого пространства имен', function() {
 		const manager = new Ext.Manager();
 		const sampleNamespace = new Ext.Namespace('SampleNamespace', manager);
 		assert.ok<Ext.Namespace>(sampleNamespace);
 		assert.strictEqual<number>(sampleNamespace.count, 0);
 	});
-	it('name', function() {
+	it('Проверка имени пространства имен', function() {
 		const manager = new Ext.Manager();
 		const sampleNamespace = new Ext.Namespace('SampleNamespace', manager);
-		assert.strictEqual(sampleNamespace.text, 'SampleNamespace');
+		assert.strictEqual(sampleNamespace.name, 'SampleNamespace');
 	});
-	it('manager', function() {
+	it('Проверка менеджера пространства имен', function() {
 		const manager = new Ext.Manager();
 		const sampleNamespace = new Ext.Namespace('SampleNamespace', manager);
 		assert.strictEqual(sampleNamespace.manager, manager);

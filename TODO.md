@@ -1,10 +1,7 @@
 TODO
 ====
 
-Скрипты
-release:npm-publish:minor
-release:npm-publish:patch
-стоит убрать, потому что файл HISTORY автоматически не пополнить.
+
 
 
 ManagerCode

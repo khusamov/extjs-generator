@@ -17,6 +17,19 @@ export default class Workspace {
 	private config: object;
 	private packages: Package[] = [];
 	public dir: string;
+
+	/**
+	 * Создает рабочее пространство и загружает указанную директорию.
+	 * Замена асинхронного конструктора.
+	 * @param {string} dir
+	 * @returns {Promise<Workspace>}
+	 */
+	static async load(dir: string): Promise<Workspace> {
+		const workspace = new this();
+		await workspace.load(dir);
+		return workspace;
+	}
+
 	constructor() {}
 	async load(dir: string) {
 		this.dir = dir;

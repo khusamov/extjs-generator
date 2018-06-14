@@ -1,5 +1,7 @@
 {
-  "apps": [],
+  "apps": [
+    "pir-client"
+  ],
   "frameworks": {
     "ext": {
       "path": "node_modules/infogorod-sencha-extjs-6.5.3.57",

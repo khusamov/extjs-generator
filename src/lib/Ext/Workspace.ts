@@ -4,6 +4,7 @@ import * as Util from 'util';
 import * as Json5 from 'json5';
 import Package from './Package';
 import Class from './Class';
+import App from './App';
 
 const readFile = Util.promisify(Fs.readFile);
 
@@ -12,11 +13,13 @@ const readFile = Util.promisify(Fs.readFile);
  * Представляет из себя коллекцию пакетов проекта (Package[]).
  * Предоставляет следующие функции:
  * Чтение и парсинг директории с рабочим пространством проекта на Sencha ExtJS.
+ * Чтение приложений, прописанных в конфигурационном файле рабочего пространства.
  */
 export default class Workspace {
-	private config: object;
+	private config: any;
 	private packages: Package[] = [];
-	public dir: string;
+	dir: string;
+	applications: App[] = [];
 
 	/**
 	 * Создает рабочее пространство и загружает указанную директорию.
@@ -35,6 +38,14 @@ export default class Workspace {
 		this.dir = dir;
 		const configFilePath = Path.join(dir, 'workspace.json');
 		this.config = Json5.parse(await readFile(configFilePath, {encoding: 'utf8'}));
+		// Загрузка приложений.
+		if ('apps' in this.config) {
+			for (let appDir of this.config.apps) {
+				const app = await App.load(Path.join(this.dir, appDir));
+				app.workspace = this;
+				this.applications.push(app);
+			}
+		}
 	}
 
 	/**

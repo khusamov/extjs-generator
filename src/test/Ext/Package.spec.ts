@@ -7,7 +7,7 @@ import MakeDir = require('mkdirp-promise');
 import { describe, it, before, after } from 'mocha';
 import { assert } from 'chai';
 
-import { getTargetDir } from '../util';
+import { getTargetDir, createFakeWorkspaceDir } from '../util';
 import { Ext } from '../../index';
 
 const readFile = Util.promisify(Fs.readFile);
@@ -166,24 +166,6 @@ describe('Package', function() {
 
 
 });
-
-/**
- * Создание директории фейкового рабочего пространства ExtJS-проекта.
- * В директории создается конфигурационный файл workspace.json.
- * Вспомогательная функция.
- * @returns {Promise<string>}
- */
-async function createFakeWorkspaceDir(): Promise<string> {
-	const workspaceDir = getTargetDir('FakeWorkspaceDir');
-	await MakeDir(workspaceDir);
-	const workspaceConfigFilePath = {
-		from: Path.join(__dirname, 'workspace.json'),
-		to: Path.join(workspaceDir, 'workspace.json')
-	};
-	const workspaceConfig = await readFile(workspaceConfigFilePath.from, {encoding: 'utf8'});
-	await writeFile(workspaceConfigFilePath.to, workspaceConfig);
-	return workspaceDir;
-}
 
 /**
  * Загрузка рабочего пространства и создание одного пустого пакета в нем.

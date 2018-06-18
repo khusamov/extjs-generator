@@ -20,5 +20,18 @@ git flow init
 
 Инструкция как пользоваться скриптами package.json
 ----------------------
+
+release:start:minor  
+release:start:patch  
+Начало создания релиза (релиз с новой функциональностью и патч соответственно).
+
+release:finish:npm-publish  
+Закрытие релиза и публикация пакета на NPM.
+
+tsc  
+Компиляция проекта посредством `gulpfile.ts`. Требуется, чтобы после компиляции также были 
+скопированы файлы `*.json` и `*.xml` в папку назначения.
+
+Подробнее см.
 https://github.com/khusamov/git-flow-and-npm-version-publish/blob/master/README.md
 

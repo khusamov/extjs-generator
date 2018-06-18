@@ -1,5 +1,6 @@
 {
-  "exclude": ["node_modules", "temp", "dist"],
+  "include": ["src/**/*"],
+  "exclude": ["src/test"],
   "compilerOptions": {
     "locale": "ru",
     "baseUrl": "src",

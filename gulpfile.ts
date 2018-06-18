@@ -5,7 +5,7 @@ import * as GulpTypeScript from 'gulp-typescript';
 
 /**
  * Gulpfile введен в разработку пока лишь с одной целью:
- * копировать JSON и XML файлы из src в dist.
+ * копировать JSON и XML файлы из src/lib в dist.
  */
 
 const tsProject = GulpTypeScript.createProject('tsconfig.json');
@@ -14,7 +14,7 @@ const tsConfigBaseUrl = tsConfig.compilerOptions.baseUrl;
 const tsConfigOutDir = tsConfig.compilerOptions.outDir;
 
 /**
- * Копирование файлов JSON и XML из src в dist.
+ * Копирование файлов JSON и XML из src/lib в dist.
  */
 Gulp.task('copyFiles', function() {
 	const src = (

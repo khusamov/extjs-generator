@@ -1,6 +1,16 @@
 История изменений
 =================
 
+1.3.2
+-----
+
+Исправлена ошибка вида:
+
+    no such file or directory, open 
+    'node_modules\khusamov-extjs-generator\dist\lib\Ext\fileTpl\package.build.xml'
+
+Теперь при компиляции файлы `*.json` и `*.xml` копируются и публикуются в NPM.
+
 1.3.1
 -----
 

@@ -38,7 +38,17 @@ export default class Package {
 		return [pascalcase(this.name.split('-')[0])].concat(this.name.split('-').slice(1)).join('.');
 	}
 
-	constructor(public name: string, public workspace?: Workspace) {}
+	constructor(
+		/**
+		 * Имя пакета.
+		 * Например 'pir-client'.
+		 */
+		public name: string,
+		/**
+		 * Рабочее пространство, в котором располагается данный пакет.
+		 */
+		public workspace?: Workspace
+	) {}
 
 	/**
 	 * Удаляет все файлы в директории пакета, если они есть.

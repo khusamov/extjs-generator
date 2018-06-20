@@ -119,34 +119,25 @@ export default class Package {
 
 	/**
 	 * Запись шаблонных файлов.
-	 * Файлы считываются с __dirname/from, записываются в this.dir/to
-	 * В каждом файле производится замена {{параметров}} на значения из this.
-	 * @param {object[]} fileMap
-	 * @param {string} fileMap.from
-	 * @param {string} fileMap.to
-	 * @param {string[]} names
+	 * Файлы считываются с __dirname/fileTpl/from, записываются в this.dir/to
+	 * В каждом файле производится замена {{ИмяПараметра}} на значения из this[<ИмяПараметра>].
+	 * @param {string[]} paramNames Список параметров для поиска в файлах.
+	 * @param {object[]} fileMap Список путей к файлам.
+	 * @param {string} fileMap.from Путь откуда брать файл.
+	 * @param {string} fileMap.to Путь, куда записывать файл.
 	 * @returns {Promise<void>}
 	 */
-	private async writeConfigFiles(names: string[], fileMap: {from: string, to: string}[]) {
-		const files = await Promise.all(
-			fileMap.map(file => ({
-				from: file.from,
-				to: file.to
-			})).map(async path => ({
-				path,
-				content: await readFile(Path.join(__dirname, 'fileTpl', path.from), {encoding: 'utf8'})
-			}))
+	private async writeConfigFiles(paramNames: string[], fileMap: {from: string, to: string}[]) {
+		return await Promise.all(
+			fileMap.map(async path => {
+				await writeFile(
+					Path.join(this.dir, path.to),
+					paramNames.reduce(
+						(content, paramName) => content.replace(new RegExp(`{{${paramName}}}`, 'g'), this[paramName]),
+						await readFile(Path.join(__dirname, 'fileTpl', path.from), {encoding: 'utf8'})
+					)
+				);
+			})
 		);
-		const preparedFiles = files.map(file => _.merge(file, {
-			content: (
-				names.reduce(
-					(content, paramName) => content.replace(new RegExp(`{{${paramName}}}`, 'g'), this[paramName]),
-					file.content
-				)
-			)
-		}));
-		for (let file of preparedFiles) {
-			await writeFile(Path.join(this.dir, file.path.to), file.content);
-		}
 	}
 }

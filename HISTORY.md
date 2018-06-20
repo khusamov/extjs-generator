@@ -1,6 +1,16 @@
 История изменений
 =================
 
+1.4.0
+-----
+
+Изменен API пакета.
+Объекты Ext, Code и JavaScript удалены из экспорта.
+Вместо них добавлены непосредственно все классы:
+Workspace, Application, Package, Manager, Namespace,
+ClassName, IClassName, BaseClass, DataModelClass,
+BaseClassCode, ManagerCode
+
 1.3.3
 -----
 

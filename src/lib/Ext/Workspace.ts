@@ -17,7 +17,18 @@ const readFile = Util.promisify(Fs.readFile);
 export default class Workspace {
 	private config: any;
 	private packages: Package[] = [];
+
+	/**
+	 * Директория рабочего пространства.
+	 * Абсолютный путь.
+	 * @property {string}
+	 */
 	dir: string;
+
+	/**
+	 * Массив приложений рабочего пространства.
+	 * @property {Application[]}
+	 */
 	applications: Application[] = [];
 
 	/**
@@ -27,13 +38,15 @@ export default class Workspace {
 	 * @returns {Promise<Workspace>}
 	 */
 	static async load(dir: string): Promise<Workspace> {
-		const workspace = new this();
-		await workspace.load(dir);
-		return workspace;
+		return await new this().load(dir);
 	}
 
-	constructor() {}
-	async load(dir: string) {
+	/**
+	 * Загрузка данных о рабочем пространстве.
+	 * @param {string} dir
+	 * @returns {Promise<void>}
+	 */
+	async load(dir: string): Promise<this> {
 		this.dir = dir;
 		const configFilePath = Path.join(dir, 'workspace.json');
 		this.config = Json5.parse(await readFile(configFilePath, {encoding: 'utf8'}));
@@ -45,6 +58,7 @@ export default class Workspace {
 				this.applications.push(app);
 			}
 		}
+		return this;
 	}
 
 	/**
@@ -58,7 +72,11 @@ export default class Workspace {
 		return this;
 	}
 
-	async save() {
+	/**
+	 * Сохранение пакетов рабочего пространства на диске.
+	 * @returns {Promise<void>}
+	 */
+	async save(): Promise<void> {
 		await Promise.all(this.packages.map(pkg => pkg.save()));
 	}
 

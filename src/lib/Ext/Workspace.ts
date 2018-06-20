@@ -3,7 +3,6 @@ import * as Path from 'path';
 import * as Util from 'util';
 import * as Json5 from 'json5';
 import Package from './Package';
-import BaseClass from './class/BaseClass';
 import Application from './Application';
 
 const readFile = Util.promisify(Fs.readFile);

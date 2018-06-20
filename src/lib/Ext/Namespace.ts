@@ -9,6 +9,7 @@ import Manager from './Manager';
 export default class Namespace {
 	/**
 	 * Проверка валидности имени пространства имен.
+	 * Имя пространства имен должно соответствовать PascalCase-формату строк.
 	 * @param {string} name
 	 * @returns {boolean}
 	 */
@@ -31,16 +32,21 @@ export default class Namespace {
 		return !!this.count;
 	}
 
-	get name(): string {
-		return this.text;
+	/**
+	 * @deprecated
+	 * @returns {string}
+	 */
+	get text(): string {
+		console.warn('Свойство Namespace.text устарело. Используйте name.');
+		return this.name;
 	}
 
 	/**
 	 * Конструктор.
-	 * @param {string} text
+	 * @param {string} name
 	 * @param {Manager} manager
 	 */
-	constructor(public text: string, public manager?: Manager) {
+	constructor(public name: string, public manager?: Manager) {
 		if (manager) manager.add(this);
 	}
 
@@ -85,20 +91,4 @@ export default class Namespace {
 	*[Symbol.iterator](): IterableIterator<BaseClass> {
 		for (let ns of this.classes) yield ns;
 	}
-
-	// /**
-	//  * Отфильтровать классы в новое пространство имен с тем же именем и менеджером.
-	//  * @param {Function} filterFn
-	//  * @returns {Namespace}
-	//  */
-	// filter(filterFn: (cls: Class, index: number, classes: Class[]) => boolean): Namespace {
-	// 	return (
-	// 		this.classes
-	// 			.filter(filterFn)
-	// 			.reduce<Namespace>(
-	// 				(filteredManager, ns) => filteredManager.add(ns),
-	// 				new Namespace(this.name, this.manager)
-	// 			)
-	// 	);
-	// }
 }

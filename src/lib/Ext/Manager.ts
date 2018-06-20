@@ -8,7 +8,7 @@ export default class Manager {
 	private namespaces: Namespace[] = [];
 
 	/**
-	 * Список всех классов под управлением менеджера.
+	 * Список классов из всех пространств имен под управлением менеджера.
 	 * @returns {BaseClass[]}
 	 */
 	get classes(): BaseClass[] {
@@ -74,6 +74,15 @@ export default class Manager {
 	}
 
 	/**
+	 * Проверка наличия пространства имен.
+	 * @param {string} name
+	 * @returns {boolean}
+	 */
+	has(name: string): boolean {
+		return !!this.get(name);
+	}
+
+	/**
 	 * Поиск класса по всем пространствам имен.
 	 * @param {string} name
 	 */
@@ -86,10 +95,6 @@ export default class Manager {
 		);
 	}
 
-	has(name: string): boolean {
-		return !!this.get(name);
-	}
-
 	/**
 	 * Реализация итератора для менеджера пространств имен.
 	 * @returns {IterableIterator<Namespace>}
@@ -97,26 +102,4 @@ export default class Manager {
 	*[Symbol.iterator](): IterableIterator<Namespace> {
 		for (let ns of this.namespaces) yield ns;
 	}
-
-	// /**
-	//  * Отфильтровать пространства имен в новый менеджер.
-	//  * @param {Function} filterFn
-	//  * @param {Namespace} filterFn.namespace
-	//  * @returns {Manager}
-	//  */
-	// filter(filterFn: (namespace: Namespace, index: number, namespaces: Namespace[]) => boolean): Manager {
-	// 	return (
-	// 		this.namespaces
-	// 			.filter(filterFn)
-	// 			.reduce<Manager>((filteredManager, ns) => filteredManager.add(ns), new Manager())
-	// 	);
-	// }
-	//
-	// map(filterFn: (namespace: Namespace, index: number, namespaces: Namespace[]) => Namespace): Manager {
-	// 	return (
-	// 		this.namespaces
-	// 			.map<Namespace>(filterFn)
-	// 			.reduce<Manager>((filteredManager, ns) => filteredManager.add(ns), new Manager())
-	// 	);
-	// }
 }

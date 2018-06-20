@@ -112,7 +112,7 @@ export default class ClassName implements IClassName {
 	 * Полное имя класса.
 	 * @returns {string}
 	 */
-	get text(): string {
+	get fullName(): string {
 		return ([]
 			.concat(this.namespace.text || [])
 			.concat(this.path)
@@ -127,16 +127,16 @@ export default class ClassName implements IClassName {
 	 * @returns {string}
 	 */
 	get sourceFileName(): string {
-		return ClassName.toSourceFileName(this.text);
+		return ClassName.toSourceFileName(this.fullName);
 	}
 
 	/**
 	 * Конструктор.
-	 * @param {string} text
+	 * @param {string} name
 	 * @param {string} namespace
 	 */
-	constructor(text: string = '', namespace?: string) {
-		const parsedName = ClassName.parse(text, namespace);
+	constructor(name: string = '', namespace?: string) {
+		const parsedName = ClassName.parse(name, namespace);
 		this.namespace = new Namespace(parsedName.namespace as string);
 		this.path = parsedName.path;
 		this.name = parsedName.name;
@@ -147,6 +147,6 @@ export default class ClassName implements IClassName {
 	 * @returns {string}
 	 */
 	toString(): string {
-		return this.text;
+		return this.fullName;
 	}
 }

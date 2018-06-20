@@ -52,7 +52,7 @@ describe('ClassName', function() {
 		assert.isArray<string[]>(className.path, 'Ожидается массив');
 		assert.strictEqual<number>(className.path.length, 0, 'Ожидается пустой массив');
 		assert.strictEqual<string>(className.name, '', 'Ожидается пустая строка вместо имени');
-		assert.strictEqual<string>(className.text, '', 'Ожидается пустая строка вместо полного имени');
+		assert.strictEqual<string>(className.fullName, '', 'Ожидается пустая строка вместо полного имени');
 		assert.strictEqual<string>(className.sourceFileName, '', 'Ожидается пустая строка вместо имени файла');
 	});
 	it('Создание имени', function() {
@@ -61,7 +61,7 @@ describe('ClassName', function() {
 		assert.strictEqual<string>(className.namespace.text, 'Namespace');
 		assert.deepEqual<string[]>(className.path, ['path1']);
 		assert.strictEqual<string>(className.name, 'ClassName');
-		assert.strictEqual<string>(className.text, 'Namespace.path1.ClassName');
+		assert.strictEqual<string>(className.fullName, 'Namespace.path1.ClassName');
 		assert.strictEqual<string>(className.sourceFileName, 'path1/ClassName.js'.split('/').join(Path.sep));
 	});
 	it('Создание имени с пространством имен', function() {
@@ -70,7 +70,7 @@ describe('ClassName', function() {
 		assert.strictEqual<string>(className.namespace.text, 'Namespace.path1');
 		assert.deepEqual<string[]>(className.path, []);
 		assert.strictEqual<string>(className.name, 'ClassName');
-		assert.strictEqual<string>(className.text, 'Namespace.path1.ClassName');
+		assert.strictEqual<string>(className.fullName, 'Namespace.path1.ClassName');
 		assert.strictEqual<string>(className.sourceFileName, 'path1/ClassName.js'.split('/').join(Path.sep));
 	});
 });

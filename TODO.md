@@ -1,13 +1,16 @@
 TODO
 ====
 
-
 Перейти от имен вида Ext.data.Model к именам вида ExtDataModel.
     Этот пункт пока под вопросом.
     Почему надо перейти?
         1) К примеру, в JSDoc не поддерживается такой тип @returns {Promise<Ext.Workspace>}, 
         почему то не видит Ext.Workspace, но видит Workspace.
         2) Не работает автоподстановка в IDEA
+
+
+Нужно избавиться от Formatter 
+    в файлах README.md и Code/ManagerCode.ts
 
 
 ManagerCode

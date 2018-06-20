@@ -4,7 +4,7 @@ import { describe, it, before, after } from 'mocha';
 import { assert } from 'chai';
 
 import { getTargetDir, createFakeWorkspaceDir } from '../util';
-import {Ext} from '../../index';
+import { Workspace } from '../../index';
 
 describe('Workspace', function() {
 	let workspaceDir: string;
@@ -17,7 +17,7 @@ describe('Workspace', function() {
 		await Del(workspaceDir, {force: true});
 	});
 	it('Чтение директорий приложений в рабочем пространстве', async function() {
-		const workspace = await Ext.Workspace.load(workspaceDir);
+		const workspace = await Workspace.load(workspaceDir);
 		assert.strictEqual<number>(workspace.applications.length, 1);
 		assert.strictEqual<string>(workspace.applications[0].dir, 'pir-client');
 		assert.strictEqual<string>(workspace.applications[0].name, 'PirClient');

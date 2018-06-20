@@ -1,18 +1,20 @@
 import * as _ from 'lodash';
 import { ObjectNode, StringNode, ArrayNode } from 'khusamov-javascript-generator';
-import Namespace from './Namespace';
-import ClassName from './ClassName';
-import ClassNameValidError from './ClassNameValidError';
+import Namespace from '../Namespace';
+import ClassName from '../ClassName';
+import ClassNameValidError from '../ClassNameValidError';
 import {
 	TStringOrStringArray,
 	isTStringOrStringArray,
 	isEmptyStringOrStringArray
-} from '../type/TStringOrStringArray';
+} from '../../type/TStringOrStringArray';
 
 /**
- * Класс.
+ * Имитация базового класса.
+ * @link http://docs.sencha.com/extjs/6.5.3/classic/Ext.Base.html
+ * @link http://docs.sencha.com/extjs/6.5.3/classic/Ext.Class.html
  */
-export default class Class extends ObjectNode {
+export default class BaseClass extends ObjectNode {
 
 	static valueDefault = {
 		extend: '',
@@ -52,14 +54,28 @@ export default class Class extends ObjectNode {
 		this.get<StringNode>('override').value = parentClassName;
 	}
 
+	/**
+	 * Зависимости класса.
+	 * @returns {ArrayNode}
+	 */
 	get requires(): ArrayNode {
 		if (!this.has('requires')) this.add('requires', ArrayNode);
 		return this.get<ArrayNode>('requires');
 	}
+
+	/**
+	 * Список классов, которые используются в данном классе.
+	 * @returns {ArrayNode}
+	 */
 	get uses(): ArrayNode {
 		if (!this.has('uses')) this.add('uses', ArrayNode);
 		return this.get<ArrayNode>('uses');
 	}
+
+	/**
+	 * Псевдонимы класса.
+	 * @returns {TStringOrStringArray | undefined}
+	 */
 	get alias(): TStringOrStringArray | undefined {
 		return (
 			this.has('alias')
@@ -132,7 +148,7 @@ export default class Class extends ObjectNode {
 			throw new Error(`Класс '${name}' не входит в пространство имен '${namespace.text}'.`);
 		}
 
-		super(name, _.merge({}, Class.valueDefault, config));
+		super(name, _.merge({}, BaseClass.valueDefault, config));
 
 		// Добавление класса в заданное пространство имен.
 		if (namespace) {

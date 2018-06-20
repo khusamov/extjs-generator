@@ -1,25 +1,26 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import { normalizeString } from '../util';
-import { Ext, Code, JavaScript } from '../../index';
+import { FunctionNode } from 'khusamov-javascript-generator';
+import { BaseClass, BaseClassCode } from '../../index';
 
-describe('Code.ClassCode', function() {
-	it('Code.ClassCode', function() {
-		// Внимание, здесь приходится создавать узел JavaScript.ExpressionNode, потому что
-		// функция alert для компилятора TypeScript не известна и компиляция не проходит.
-		const personClass = new Ext.Class('My.sample.Person', {
+describe('BaseClassCode', function() {
+	it('Пример использования', function() {
+		const personClass = new BaseClass('My.sample.Person', {
 			name: 'Unknown Person',
 			constructor: function(name) {
 				if (name) {
 					this.name = name;
 				}
 			},
-			eat: JavaScript.FunctionNode.nameless`function(foodType) {
+			// Внимание, здесь приходится создавать узел FunctionNode, потому что
+			// функция alert для компилятора TypeScript не известна и компиляция не проходит.
+			eat: FunctionNode.nameless`function(foodType) {
 				alert(this.name + " is eating: " + foodType);
 			}`
 		});
 
-		const personClassCode = new Code.ClassCode(personClass);
+		const personClassCode = new BaseClassCode(personClass);
 		assert.strictEqual<string>(
 			normalizeString(personClassCode.toString()),
 			normalizeString(`

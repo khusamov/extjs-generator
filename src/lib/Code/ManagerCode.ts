@@ -9,8 +9,8 @@ import MakeDir = require('mkdirp-promise');
 import Formatter from 'khusamov-javascript-generator/dist/lib/util/Formatter';
 import Manager from '../Ext/Manager';
 import ClassName from '../Ext/ClassName';
-import ClassCode from './ClassCode';
-import Class from '../Ext/Class';
+import BaseClassCode from './BaseClassCode';
+import BaseClass from '../Ext/class/BaseClass';
 
 const writeFile = Util.promisify(Fs.writeFile);
 
@@ -52,6 +52,24 @@ function setDefaultsTSaveToOptions(options: TSaveToOptions): TSaveToOptions {
 }
 
 export default class ManagerCode {
+	/**
+	 * Получить путь по имени класса.
+	 * @param {string} className
+	 * @param {string} rootPath
+	 * @param {TPaths} paths Массив соответствий директорий классов их пространствам имен.
+	 * @returns {string}
+	 */
+	static findPathByClassName(className: string, rootPath: string, paths: TPaths = {}) {
+		let result = rootPath;
+		for (let namespace in paths) {
+			if (className.indexOf(namespace) === 0) {
+				result = Path.join(rootPath, paths[namespace]);
+				break;
+			}
+		}
+		return result;
+	}
+
 	constructor(private manager: Manager) {}
 
 	/**
@@ -93,12 +111,12 @@ export default class ManagerCode {
 
 	/**
 	 * Вспомогательные функция.
-	 * Получить массив полные имен и содержимого файлов классов.
+	 * Получить массив полных имен и содержимого файлов классов.
 	 * Содержимое файлов форматируется функцией Formatter.prettyFormat().
 	 * @param {string} targetDir
 	 * @param {TPaths} paths
 	 * @returns {object}
-	 * @returns {string} name
+	 * @returns {string} filePath
 	 * @returns {string} content
 	 */
 	private getClassFileList(targetDir: string, paths: TPaths = {}): {
@@ -108,20 +126,9 @@ export default class ManagerCode {
 		return this.manager.classes.map(cls => ({
 			filePath: ClassName.toSourceFileName(
 				cls.name,
-				this.findPathByClassName(cls, targetDir, paths)
+				ManagerCode.findPathByClassName(cls.name, targetDir, paths)
 			),
-			content: Formatter.prettyFormat(new ClassCode(cls).toString())
+			content: Formatter.prettyFormat(new BaseClassCode(cls).toString())
 		}));
-	}
-
-	private findPathByClassName(cls: Class, defaultPath: string, paths: TPaths = {}) {
-		let result = defaultPath;
-		for (let namespace in paths) {
-			if (cls.name.indexOf(namespace) === 0) {
-				result = Path.join(defaultPath, paths[namespace]);
-				break;
-			}
-		}
-		return result;
 	}
 }

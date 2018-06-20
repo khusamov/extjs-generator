@@ -18,41 +18,38 @@ npm i khusamov-extjs-generator --save
 Пример кода
 ------------
 
+
 ```typescript
+import { 
+	Manager, 
+	Namespace, 
+	BaseClass, 
+	BaseClassCode,
+	ManagerCode
+} from 'khusamov-extjs-generator';
 
-import { Ext, Code, Formatter } from 'khusamov-extjs-generator';
+const manager = new Manager;
+manager.add(new Namespace('Namespace1'));
+manager.get('Namespace1').add(new BaseClass('Namespace1.Class1'));
 
-// Менеджер классов.
-const manager1 = new Ext.Manager;
-
-// Пространство имен классов.
-const namespace1 = new Ext.Namespace('Namespace1.sample', manager1);
-
-// Создание класса.
-const class1 = new Ext.Class('Class1', namespace1);
-
-// Вывод кода объекта.
-const class1Code = new Code.ClassCode(class1);
-console.log(Formatter.prettyFormat(class1Code.toString()));
-
-// Вывод всего кода в директорию.
-const manager1Code = new Code.ManagerCode(manager1);
 (async () => {
-    await manager1Code.saveTo('path/to/dir');
-    console.log('Файлы сохранены.');
-})();
+	// Вывод кода класса 'Namespace1.Class1'.
+    console.log(new BaseClassCode(manager.get('Namespace1').get('Class1')).toString());
 
-// Сохранение классов из нескольких пространств имен.
-(async () => {
-    await manager1Code.saveTo('path/to/dir', {
-        Namespace1: 'ns1',
-        Namespace2: 'ns1'
+	// Сохранение всего кода, классов находящихся в менеджере, в директорию.
+	// Имена файлов определяются автоматически на основании имени классов.
+	await (new ManagerCode(manager)).saveTo('path/to/dir');
+	console.log('Файлы сохранены.');
+
+    // Распределение классов из нескольких пространств имен в различные директории.
+    await (new ManagerCode(manager)).saveTo('path/to/dir', {
+        'Namespace1.override': 'overrides',
+        'Namespace1': 'src/Namespace1',
+        'Namespace2': 'src/Namespace2'
     });
     console.log('Файлы сохранены.');
 })();
-
 ```
-
 
 
 
@@ -61,18 +58,20 @@ const manager1Code = new Code.ManagerCode(manager1);
 
 ```typescript
 
-import { Ext, Code, Formatter } from 'khusamov-extjs-generator';
+import {
+	Manager,
+	Workspace,
+	Package
+} from 'khusamov-extjs-generator';
 
 (async () => {
-    const workspace = new Ext.Workspace;
-    await workspace.load('path/to/workspace');
-    const package1 = new Ext.Package('package1');
+    const workspace = Workspace.load('path/to/workspace');
+    workspace.add(new Package('package1'));
     
     // Создание и наполнение менеджера см. в предыдущем примере кода.
     // Все классы менеджера попадут в пакет package1.
-    package1.manager = new Ext.Manager;
+    workspace.get('package1').manager = new Manager;
     
-    workspace.add(package1);
     await workspace.save();
 })();
 

@@ -1,9 +1,10 @@
-
-import * as Ext from './lib/Ext';
-export { Ext };
-
-import * as Code from './lib/Code';
-export { Code };
-
-import * as JavaScript from 'khusamov-javascript-generator';
-export { JavaScript };
+export { default as Workspace } from './lib/Ext/Workspace';
+export { default as Application } from './lib/Ext/Application';
+export { default as Package } from './lib/Ext/Package';
+export { default as Manager } from './lib/Ext/Manager';
+export { default as Namespace } from './lib/Ext/Namespace';
+export { default as ClassName, IClassName } from './lib/Ext/ClassName';
+export { default as BaseClass } from './lib/Ext/class/BaseClass';
+export { default as DataModelClass } from './lib/Ext/class/DataModelClass';
+export { default as BaseClassCode } from './lib/Code/BaseClassCode';
+export { default as ManagerCode } from './lib/Code/ManagerCode';

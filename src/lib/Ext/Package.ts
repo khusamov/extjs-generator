@@ -22,40 +22,61 @@ export default class Package {
 	 */
 	manager: Manager;
 
+	/**
+	 * Директория с исходными кодами пакета.
+	 * Путь относительно корня пакета.
+	 * @property {string}
+	 */
 	sourceDir = 'src';
+	/**
+	 * Директория с оверрайтами пакета.
+	 * Путь относительно корня пакета.
+	 * @property {string}
+	 */
 	overrideDir = 'overrides';
 
+	/**
+	 * Директория пакета.
+	 * Абсолютный путь.
+	 * @property {string}
+	 */
 	get dir(): string {
 		return Path.join(this.workspace.dir, 'packages/local', this.name);
 	}
 
 	/**
-	 * Конвертирует имя пакета по шаблону:
-	 * 'scrum-sim -> Scrum.sim'.
-	 * @returns {string}
+	 * Пространство имен классов, данного пакета.
+	 * Вычисляется автоматически из имени пакета по схеме: 'scrum-sim -> Scrum.sim'.
+	 * @property {string}
 	 */
 	get namespace(): string {
 		return [pascalcase(this.name.split('-')[0])].concat(this.name.split('-').slice(1)).join('.');
 	}
 
+	/**
+	 * Рабочее пространство, в котором располагается данный пакет.
+	 * @property {Workspace}
+	 */
+	public workspace?: Workspace;
+
 	constructor(
 		/**
 		 * Имя пакета.
 		 * Например 'pir-client'.
+		 * @property {string}
 		 */
-		public name: string,
-		/**
-		 * Рабочее пространство, в котором располагается данный пакет.
-		 */
-		public workspace?: Workspace
+		public name: string
 	) {}
 
 	/**
+	 * Сохранение новых данных пакета в директорию пакета.
+	 * Предназначен для сохранения классов на диске из менеджера классов пакета.
+	 * Производимые действия:
 	 * Удаляет все файлы в директории пакета, если они есть.
-	 * Создает директорию с именем пакета.
+	 * Создает директорию пакета в packages/local/<Имя пакета>.
 	 * Создает в директории файлы package.json и build.xml
-	 * Сохраняет классы в директории src и overrides.
-	 * Внимание, классы override отделяются из общей кучи классов.
+	 * Сохраняет классы в директориях src и overrides.
+	 * Внимание, классы '<Пространство имен>.override.' отделяются из общей кучи классов.
 	 */
 	async save() {
 		if (!this.workspace) throw new Error('Не определено рабочее пространство.');

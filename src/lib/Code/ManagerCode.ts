@@ -9,8 +9,8 @@ import MakeDir = require('mkdirp-promise');
 import Formatter from 'khusamov-javascript-generator/dist/lib/util/Formatter';
 import Manager from '../Ext/Manager';
 import ClassName from '../Ext/ClassName';
-import ClassCode from './ClassCode';
-import Class from '../Ext/Class';
+import BaseClassCode from './BaseClassCode';
+import BaseClass from '../Ext/class/BaseClass';
 
 const writeFile = Util.promisify(Fs.writeFile);
 
@@ -110,11 +110,11 @@ export default class ManagerCode {
 				cls.name,
 				this.findPathByClassName(cls, targetDir, paths)
 			),
-			content: Formatter.prettyFormat(new ClassCode(cls).toString())
+			content: Formatter.prettyFormat(new BaseClassCode(cls).toString())
 		}));
 	}
 
-	private findPathByClassName(cls: Class, defaultPath: string, paths: TPaths = {}) {
+	private findPathByClassName(cls: BaseClass, defaultPath: string, paths: TPaths = {}) {
 		let result = defaultPath;
 		for (let namespace in paths) {
 			if (cls.name.indexOf(namespace) === 0) {

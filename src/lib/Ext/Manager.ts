@@ -1,5 +1,5 @@
 import Namespace from './Namespace';
-import Class from './Class';
+import BaseClass from './class/BaseClass';
 
 /**
  * Менеджер пространств имен и классов.
@@ -9,10 +9,10 @@ export default class Manager {
 
 	/**
 	 * Список всех классов под управлением менеджера.
-	 * @returns {Class[]}
+	 * @returns {BaseClass[]}
 	 */
-	get classes(): Class[] {
-		return [...this].reduce<Class[]>((result, ns: Namespace) => result.concat([...ns]), []);
+	get classes(): BaseClass[] {
+		return [...this].reduce<BaseClass[]>((result, ns: Namespace) => result.concat([...ns]), []);
 	}
 
 	/**
@@ -77,9 +77,9 @@ export default class Manager {
 	 * Поиск класса по всем пространствам имен.
 	 * @param {string} name
 	 */
-	find(name: string): Class | undefined {
+	find(name: string): BaseClass | undefined {
 		return (
-			this.namespaces.reduce<Class>(
+			this.namespaces.reduce<BaseClass>(
 				(foundClass, namespace) => foundClass ? foundClass : namespace.get(name),
 				undefined
 			)

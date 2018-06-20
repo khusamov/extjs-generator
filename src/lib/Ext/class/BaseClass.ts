@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
 import { ObjectNode, StringNode, ArrayNode } from 'khusamov-javascript-generator';
-import Namespace from './Namespace';
-import ClassName from './ClassName';
-import ClassNameValidError from './ClassNameValidError';
+import Namespace from '../Namespace';
+import ClassName from '../ClassName';
+import ClassNameValidError from '../ClassNameValidError';
 import {
 	TStringOrStringArray,
 	isTStringOrStringArray,
@@ -10,9 +10,11 @@ import {
 } from '../type/TStringOrStringArray';
 
 /**
- * Класс.
+ * Имитация базового класса.
+ * @link http://docs.sencha.com/extjs/6.5.3/classic/Ext.Base.html
+ * @link http://docs.sencha.com/extjs/6.5.3/classic/Ext.Class.html
  */
-export default class Class extends ObjectNode {
+export default class BaseClass extends ObjectNode {
 
 	static valueDefault = {
 		extend: '',
@@ -132,7 +134,7 @@ export default class Class extends ObjectNode {
 			throw new Error(`Класс '${name}' не входит в пространство имен '${namespace.text}'.`);
 		}
 
-		super(name, _.merge({}, Class.valueDefault, config));
+		super(name, _.merge({}, BaseClass.valueDefault, config));
 
 		// Добавление класса в заданное пространство имен.
 		if (namespace) {

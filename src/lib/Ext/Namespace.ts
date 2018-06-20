@@ -1,4 +1,4 @@
-import Class from './Class';
+import BaseClass from './class/BaseClass';
 import Manager from './Manager';
 
 /**
@@ -17,7 +17,7 @@ export default class Namespace {
 		return nameRe.test(name);
 	}
 
-	private classes: Class[] = [];
+	private classes: BaseClass[] = [];
 
 	/**
 	 * Количество классов в данном пространстве имен.
@@ -46,10 +46,10 @@ export default class Namespace {
 
 	/**
 	 * Добавить класс в пространство имен.
-	 * @param {Class} cls
+	 * @param {BaseClass} cls
 	 * @returns {Namespace}
 	 */
-	add(cls: Class): this {
+	add(cls: BaseClass): this {
 		const namespaceHasClass = !!this.classes.find(testedClass => testedClass === cls);
 		if (namespaceHasClass) {
 			throw new Error(`Попытка дважды добавить класс '${cls.name}' в пространство имен '${this.name}'.`);
@@ -72,9 +72,9 @@ export default class Namespace {
 	/**
 	 * Получить класс по его полному имени.
 	 * @param {string} name
-	 * @returns {Class}
+	 * @returns {BaseClass}
 	 */
-	get(name: string): Class {
+	get(name: string): BaseClass {
 		return this.classes.find(cls => cls.name === name);
 	}
 
@@ -82,7 +82,7 @@ export default class Namespace {
 	 * Реализация итератора для пространства имен.
 	 * @returns {IterableIterator<Namespace>}
 	 */
-	*[Symbol.iterator](): IterableIterator<Class> {
+	*[Symbol.iterator](): IterableIterator<BaseClass> {
 		for (let ns of this.classes) yield ns;
 	}
 

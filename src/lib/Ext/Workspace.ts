@@ -3,8 +3,8 @@ import * as Path from 'path';
 import * as Util from 'util';
 import * as Json5 from 'json5';
 import Package from './Package';
-import Class from './Class';
-import App from './App';
+import BaseClass from './class/BaseClass';
+import Application from './Application';
 
 const readFile = Util.promisify(Fs.readFile);
 
@@ -19,7 +19,7 @@ export default class Workspace {
 	private config: any;
 	private packages: Package[] = [];
 	dir: string;
-	applications: App[] = [];
+	applications: Application[] = [];
 
 	/**
 	 * Создает рабочее пространство и загружает указанную директорию.
@@ -41,7 +41,7 @@ export default class Workspace {
 		// Загрузка приложений.
 		if ('apps' in this.config) {
 			for (let appDir of this.config.apps) {
-				const app = await App.load(Path.join(this.dir, appDir));
+				const app = await Application.load(Path.join(this.dir, appDir));
 				app.workspace = this;
 				this.applications.push(app);
 			}

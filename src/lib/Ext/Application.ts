@@ -6,8 +6,13 @@ import Workspace from './Workspace';
 
 const readFile = Util.promisify(Fs.readFile);
 
-export default class App {
-	static async load(dir: string): Promise<App> {
+/**
+ * Класс для чтения файла app.json из директории приложения.
+ * Внимание! Не следует путать данный класс с классом ApplicationClass (которого
+ * пока еще нет, но возможно в будущем будет создан).
+ */
+export default class Application {
+	static async load(dir: string): Promise<Application> {
 		const app = new this();
 		await app.load(dir);
 		app.dir = dir;

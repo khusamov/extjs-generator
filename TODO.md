@@ -1,10 +1,6 @@
 TODO
 ====
 
-TODO Избавиться от странного сообщения в тесте 'Запись класса в файл' Code/ManagerCode.spec.ts.
-    No parser and no filepath given, using 'babylon' the parser now but this will throw an error in the future.
-    Please specify a parser or a filepath so one can be inferred.
-
 Перейти от имен вида Ext.data.Model к именам вида ExtDataModel.
     Этот пункт пока под вопросом.
     Почему надо перейти?

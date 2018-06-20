@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import { Ext } from '../../index';
+import {  } from '../../index';
 
 describe('Namespace', function() {
 	it('Проверка имени пространства имен на валидность', function() {
@@ -35,12 +35,12 @@ describe('Namespace', function() {
 	it('Пространство имен как итератор по классам', function() {
 		const namespace1 = new Ext.Namespace('Namespace1');
 		namespace1
-			.add(new Ext.Class('Namespace1.Class1'))
-			.add(new Ext.Class('Namespace1.Class2'))
-			.add(new Ext.Class('Namespace1.Class3'));
+			.add(new Ext.BaseClass('Namespace1.Class1'))
+			.add(new Ext.BaseClass('Namespace1.Class2'))
+			.add(new Ext.BaseClass('Namespace1.Class3'));
 		// Цикл по итератору.
 		for (let cls of namespace1) {
-			assert.instanceOf<Ext.Class>(cls, Ext.Class);
+			assert.instanceOf<Ext.BaseClass>(cls, Ext.BaseClass);
 		}
 		// Оператор ... для итератора.
 		assert.deepEqual(

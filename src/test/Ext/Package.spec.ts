@@ -8,7 +8,7 @@ import { describe, it, before, after } from 'mocha';
 import { assert } from 'chai';
 
 import { getTargetDir, createFakeWorkspaceDir } from '../util';
-import { Ext } from '../../index';
+import {  } from '../../index';
 
 const readFile = Util.promisify(Fs.readFile);
 const writeFile = Util.promisify(Fs.writeFile);
@@ -83,7 +83,7 @@ describe('Package', function() {
 				// Создание классов в пакете package1.
 				const package1Manager = workspace1.get('package1').manager;
 				const namespace1 = new Ext.Namespace('Namespace1', package1Manager);
-				for (let classInfo of classInfoList) namespace1.add(new Ext.Class(classInfo.className));
+				for (let classInfo of classInfoList) namespace1.add(new Ext.BaseClass(classInfo.className));
 				// Сохранение рабочего пространства (а точнее лишь одного пакета с тремя классами) на диске.
 				await workspace1.save();
 			});
@@ -136,7 +136,7 @@ describe('Package', function() {
 						namespace = new Ext.Namespace(namespaceName);
 						package1Manager.add(namespace);
 					}
-					namespace.add(new Ext.Class(classInfo.className));
+					namespace.add(new Ext.BaseClass(classInfo.className));
 				}
 				// Сохранение рабочего пространства (пакет и классы из него) на диске.
 				await workspace1.save();

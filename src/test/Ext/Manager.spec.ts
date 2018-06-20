@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import { Ext } from '../../index';
+import {  } from '../../index';
 
 describe('Manager', function() {
 	it('Пустой менеджер пространств имен', function() {
@@ -83,16 +83,16 @@ describe('Manager', function() {
 	it('Поиск класса в менеджере', function() {
 		const manager = new Ext.Manager();
 		manager.add(new Ext.Namespace('SampleNamespace1'));
-		manager.get('SampleNamespace1').add(new Ext.Class('SampleNamespace1.path1.ClassName'));
+		manager.get('SampleNamespace1').add(new Ext.BaseClass('SampleNamespace1.path1.ClassName'));
 		const sampleClass = manager.find('SampleNamespace1.path1.ClassName');
-		assert.isDefined<Ext.Class>(sampleClass, 'Ожидается, что класс будет найден');
+		assert.isDefined<Ext.BaseClass>(sampleClass, 'Ожидается, что класс будет найден');
 		assert.strictEqual<string>(sampleClass.name, 'SampleNamespace1.path1.ClassName');
 	});
 	it('Список классов', function() {
 		const manager1 = new Ext.Manager();
 		const namespace1 = new Ext.Namespace('Namespace1', manager1);
 		const classList = ['Namespace1.Class1', 'Namespace1.path1.ClassName', 'Namespace1.path1.path2.path3.ClassName'];
-		for (let className of classList) namespace1.add(new Ext.Class(className));
+		for (let className of classList) namespace1.add(new Ext.BaseClass(className));
 		assert.deepEqual<string[]>(manager1.classes.map(cls => cls.name), classList);
 	});
 	// it('Конвертация массива пространств имен менеджера методом map()', function() {

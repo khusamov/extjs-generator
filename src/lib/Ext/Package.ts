@@ -100,19 +100,39 @@ export default class Package {
 			to: 'package.json'
 		}]);
 		// Сохранение классов в директории src (sourceDir) и overrides (overrideDir).
+		await this.saveClasses();
+	}
+
+	/**
+	 * Сохранение классов в директории src (sourceDir) и overrides (overrideDir).
+	 * Классы записываются в каталог <package-dir>/src.
+	 * Классы начинающиеся на Namespace.override записываются в каталог <package-dir>/override.
+	 * Если пространств имен больше одного, то в имена директорий встраиваются имена пространства имен:
+	 * <package-dir>/<Namespace>/src и <package-dir>/<Namespace>/override.
+	 * @returns {Promise<void>}
+	 */
+	private async saveClasses() {
 		if (this.manager) {
 			await new ManagerCode(this.manager).saveTo(this.dir, {
 				del: false,
-				paths: [...this.manager].map(ns => ns.name).reduce((result, namespaceName) => {
-					return _.merge(result, {
-						// Классы записываются в каталог <package-dir>/src.
-						// Классы начинающиеся на Namespace.override записываются в каталог <package-dir>/override.
-						// Если пространств имен больше одного, то в имена директорий встраиваются имена пространства имен:
-						// <package-dir>/<Namespace>/src и <package-dir>/<Namespace>/override.
-						[namespaceName]: this.manager.count > 1 ? Path.join(this.sourceDir, namespaceName) : this.sourceDir,
-						[namespaceName + '.override']: this.manager.count > 1 ? Path.join(this.overrideDir, namespaceName) : this.overrideDir
-					});
-				}, {})
+				paths: (
+					[...this.manager]
+						.map(ns => ns.name)
+						.reduce((result, namespaceName) => {
+							return _.merge(result, {
+								[namespaceName]: (
+									this.manager.count > 1
+										? Path.join(this.sourceDir, namespaceName)
+										: this.sourceDir
+								),
+								[namespaceName + '.override']: (
+									this.manager.count > 1
+										? Path.join(this.overrideDir, namespaceName)
+										: this.overrideDir
+								)
+							});
+						}, {})
+				)
 			});
 		}
 	}

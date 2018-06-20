@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import { BaseClass, Manager, Namespace } from '../../index';
+import { BaseClass, Manager, Namespace } from '../../../index';
 
 describe('Class', function() {
 

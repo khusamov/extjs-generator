@@ -7,7 +7,7 @@ import {
 	TStringOrStringArray,
 	isTStringOrStringArray,
 	isEmptyStringOrStringArray
-} from '../type/TStringOrStringArray';
+} from '../../type/TStringOrStringArray';
 
 /**
  * Имитация базового класса.

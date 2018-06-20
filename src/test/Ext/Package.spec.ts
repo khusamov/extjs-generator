@@ -8,7 +8,7 @@ import { describe, it, before, after } from 'mocha';
 import { assert } from 'chai';
 
 import { getTargetDir, createFakeWorkspaceDir } from '../util';
-import {  } from '../../index';
+import { Workspace, Manager, Package, Namespace, BaseClass } from '../../index';
 
 const readFile = Util.promisify(Fs.readFile);
 const writeFile = Util.promisify(Fs.writeFile);
@@ -16,7 +16,7 @@ const stat = Util.promisify(Fs.stat);
 
 describe('Package', function() {
 	describe('Создание пустого пакета', function() {
-		let workspaceDir: string, package1: Ext.Package;
+		let workspaceDir: string, package1: Package;
 		before(async () => {
 			// Создание временной директории фейкового рабочего пространства.
 			workspaceDir = await createFakeWorkspaceDir();
@@ -82,8 +82,8 @@ describe('Package', function() {
 				const workspace1 = await loadWorkspaceAndCreateOnePackage(workspaceDir);
 				// Создание классов в пакете package1.
 				const package1Manager = workspace1.get('package1').manager;
-				const namespace1 = new Ext.Namespace('Namespace1', package1Manager);
-				for (let classInfo of classInfoList) namespace1.add(new Ext.BaseClass(classInfo.className));
+				const namespace1 = new Namespace('Namespace1', package1Manager);
+				for (let classInfo of classInfoList) namespace1.add(new BaseClass(classInfo.className));
 				// Сохранение рабочего пространства (а точнее лишь одного пакета с тремя классами) на диске.
 				await workspace1.save();
 			});
@@ -133,10 +133,10 @@ describe('Package', function() {
 						namespace = package1Manager.get(namespaceName);
 					} else {
 						// Создание пространства имен, если такового не нашлось в менеджере.
-						namespace = new Ext.Namespace(namespaceName);
+						namespace = new Namespace(namespaceName);
 						package1Manager.add(namespace);
 					}
-					namespace.add(new Ext.BaseClass(classInfo.className));
+					namespace.add(new BaseClass(classInfo.className));
 				}
 				// Сохранение рабочего пространства (пакет и классы из него) на диске.
 				await workspace1.save();
@@ -174,13 +174,13 @@ describe('Package', function() {
  * @param {string} packageName
  * @returns {Promise<Workspace>}
  */
-async function loadWorkspaceAndCreateOnePackage(workspaceDir: string, packageName: string = 'package1'): Promise<Ext.Workspace> {
+async function loadWorkspaceAndCreateOnePackage(workspaceDir: string, packageName: string = 'package1'): Promise<Workspace> {
 	// Создание и загрузка рабочего пространства.
-	const sampleWorkspace = new Ext.Workspace;
+	const sampleWorkspace = new Workspace;
 	await sampleWorkspace.load(workspaceDir);
 	// Создание пакета, добавление его в рабочее пространство.
-	const samplePackage = new Ext.Package(packageName);
-	samplePackage.manager = new Ext.Manager;
+	const samplePackage = new Package(packageName);
+	samplePackage.manager = new Manager;
 	sampleWorkspace.add(samplePackage);
 	return sampleWorkspace;
 }

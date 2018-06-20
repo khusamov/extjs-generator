@@ -1,10 +1,10 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import { Ext } from '../../../index';
+import { DataModelClass } from '../../../index';
 
-describe('Ext.data.Model', function() {
-	it('Создание пустого класса Ext.data.Model', function() {
-		const class1 = new Ext.data.Model('Namespace1.ClassModel1');
+describe('DataModelClass', function() {
+	it('Создание пустого класса DataModelClass', function() {
+		const class1 = new DataModelClass('Namespace1.ClassModel1');
 		assert.strictEqual<string>(class1.name, 'Namespace1.ClassModel1');
 		assert.strictEqual<string>(class1.extend, 'Ext.data.Model');
 	});
@@ -19,12 +19,12 @@ describe('Ext.data.Model', function() {
 				}
 			}
 		};
-		const class1 = new Ext.data.Model('Namespace1.ClassModel1');
+		const class1 = new DataModelClass('Namespace1.ClassModel1');
 		class1.proxy.set(proxy);
 		assert.deepEqual<object>(class1.proxy.value, proxy);
 	});
 	it('Добавление полей модели', function() {
-		const class1 = new Ext.data.Model('Namespace1.ClassModel1');
+		const class1 = new DataModelClass('Namespace1.ClassModel1');
 		class1.fields.add({
 			name: 'field1',
 			mapping: 'data.Field1'

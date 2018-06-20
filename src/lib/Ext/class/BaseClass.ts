@@ -54,14 +54,28 @@ export default class BaseClass extends ObjectNode {
 		this.get<StringNode>('override').value = parentClassName;
 	}
 
+	/**
+	 * Зависимости класса.
+	 * @returns {ArrayNode}
+	 */
 	get requires(): ArrayNode {
 		if (!this.has('requires')) this.add('requires', ArrayNode);
 		return this.get<ArrayNode>('requires');
 	}
+
+	/**
+	 * Список классов, которые используются в данном классе.
+	 * @returns {ArrayNode}
+	 */
 	get uses(): ArrayNode {
 		if (!this.has('uses')) this.add('uses', ArrayNode);
 		return this.get<ArrayNode>('uses');
 	}
+
+	/**
+	 * Псевдонимы класса.
+	 * @returns {TStringOrStringArray | undefined}
+	 */
 	get alias(): TStringOrStringArray | undefined {
 		return (
 			this.has('alias')

@@ -1,6 +1,6 @@
 {
   "name": "khusamov-extjs-generator",
-  "version": "1.3.3",
+  "version": "1.4.0",
   "description": "Генератор Sencha ExtJS кода (6.х.х)",
   "author": "Khusamov Sukhrob <khusamov@yandex.ru>",
   "homepage": "https://github.com/khusamov/extjs-generator",

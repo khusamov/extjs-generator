@@ -84,7 +84,7 @@ describe('Manager', function() {
 		const manager = new Manager();
 		manager.add(new Namespace('SampleNamespace1'));
 		manager.get('SampleNamespace1').add(new BaseClass('SampleNamespace1.path1.ClassName'));
-		const sampleClass = manager.find('SampleNamespace1.path1.ClassName');
+		const sampleClass = manager.findClass('SampleNamespace1.path1.ClassName');
 		assert.isDefined<BaseClass>(sampleClass, 'Ожидается, что класс будет найден');
 		assert.strictEqual<string>(sampleClass.name, 'SampleNamespace1.path1.ClassName');
 	});

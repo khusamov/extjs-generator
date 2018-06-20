@@ -13,7 +13,7 @@ describe('Class', function() {
 			const manager = new Manager();
 			const namespace1 = new Namespace('Namespace1', manager);
 			const class1 = new BaseClass('Namespace1.path1.Class1', namespace1);
-			assert.strictEqual<BaseClass>(manager.find('Namespace1.path1.Class1'), class1);
+			assert.strictEqual<BaseClass>(manager.findClass('Namespace1.path1.Class1'), class1);
 			assert.strictEqual<BaseClass>(namespace1.get('Namespace1.path1.Class1'), class1);
 		});
 		it('Создание класса с добавлением в пространство имен', function() {
@@ -21,7 +21,7 @@ describe('Class', function() {
 			const namespace1 = new Namespace('Namespace1', manager);
 			const class1 = new BaseClass('Namespace1.path1.Class1');
 			namespace1.add(class1);
-			assert.strictEqual<BaseClass>(manager.find('Namespace1.path1.Class1'), class1);
+			assert.strictEqual<BaseClass>(manager.findClass('Namespace1.path1.Class1'), class1);
 			assert.strictEqual<BaseClass>(namespace1.get('Namespace1.path1.Class1'), class1);
 		});
 	});

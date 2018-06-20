@@ -77,7 +77,7 @@ export default class Manager {
 	 * Поиск класса по всем пространствам имен.
 	 * @param {string} name
 	 */
-	find(name: string): BaseClass | undefined {
+	findClass(name: string): BaseClass | undefined {
 		return (
 			this.namespaces.reduce<BaseClass>(
 				(foundClass, namespace) => foundClass ? foundClass : namespace.get(name),

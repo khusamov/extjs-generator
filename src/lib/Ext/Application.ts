@@ -6,6 +6,8 @@ import Workspace from './Workspace';
 import Namespace from './Namespace';
 
 const readFile = Util.promisify(Fs.readFile);
+const stat = Util.promisify(Fs.stat);
+const access = Util.promisify(Fs.access);
 
 /**
  * Класс для чтения файла app.json из директории приложения.
@@ -13,6 +15,15 @@ const readFile = Util.promisify(Fs.readFile);
  * пока еще нет, но возможно в будущем будет создан).
  */
 export default class Application {
+	static async dirExists(dir: string): Promise<boolean> {
+		try {
+			await access(Path.join(dir));
+		} catch (e) {
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 * Создание приложения.
 	 * Замена асинхронного конструктора.
@@ -59,6 +70,9 @@ export default class Application {
 	 * @returns {Promise<this>}
 	 */
 	async load(dir: string): Promise<this> {
+		if (!await Application.dirExists(dir)) {
+			throw new Error(`Директория приложения не найдена '${dir}'.`);
+		}
 		this.dir = dir;
 		this.config = Json5.parse(await readFile(Path.join(dir, 'app.json'), {encoding: 'utf8'}));
 		return this;

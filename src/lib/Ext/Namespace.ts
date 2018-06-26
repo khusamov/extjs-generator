@@ -33,15 +33,6 @@ export default class Namespace {
 	}
 
 	/**
-	 * @deprecated
-	 * @returns {string}
-	 */
-	get text(): string {
-		console.warn('Свойство Namespace.text устарело. Используйте name.');
-		return this.name;
-	}
-
-	/**
 	 * Конструктор.
 	 * @param {string} name
 	 * @param {Manager} manager
@@ -67,7 +58,7 @@ export default class Namespace {
 		if (cls.namespace && cls.namespace !== this) {
 			throw new Error(`Попытка добавить в пространство имен '${this.name}' класс '${cls.name}' из пространства имен '${cls.namespace.name}'.`);
 		}
-		if (cls.name.indexOf(this.text) !== 0) {
+		if (cls.name.indexOf(this.name) !== 0) {
 			throw new Error(`Класс '${cls.name}' не входит в пространство имен '${this.name}'.`);
 		}
 		cls.namespace = this;

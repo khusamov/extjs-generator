@@ -48,7 +48,7 @@ describe('ClassName', function() {
 	it('Пустое имя', function() {
 		const className = new ClassName();
 		assert.instanceOf<Namespace>(className.namespace, Namespace);
-		assert.strictEqual<string>(className.namespace.text, '', 'Ожидается пустое имя пространства имен');
+		assert.strictEqual<string>(className.namespace.name, '', 'Ожидается пустое имя пространства имен');
 		assert.isArray<string[]>(className.path, 'Ожидается массив');
 		assert.strictEqual<number>(className.path.length, 0, 'Ожидается пустой массив');
 		assert.strictEqual<string>(className.name, '', 'Ожидается пустая строка вместо имени');
@@ -58,7 +58,7 @@ describe('ClassName', function() {
 	it('Создание имени', function() {
 		const className = new ClassName('Namespace.path1.ClassName');
 		assert.instanceOf<Namespace>(className.namespace, Namespace);
-		assert.strictEqual<string>(className.namespace.text, 'Namespace');
+		assert.strictEqual<string>(className.namespace.name, 'Namespace');
 		assert.deepEqual<string[]>(className.path, ['path1']);
 		assert.strictEqual<string>(className.name, 'ClassName');
 		assert.strictEqual<string>(className.fullName, 'Namespace.path1.ClassName');
@@ -67,7 +67,7 @@ describe('ClassName', function() {
 	it('Создание имени с пространством имен', function() {
 		const className = new ClassName('Namespace.path1.ClassName', 'Namespace.path1');
 		assert.instanceOf<Namespace>(className.namespace, Namespace);
-		assert.strictEqual<string>(className.namespace.text, 'Namespace.path1');
+		assert.strictEqual<string>(className.namespace.name, 'Namespace.path1');
 		assert.deepEqual<string[]>(className.path, []);
 		assert.strictEqual<string>(className.name, 'ClassName');
 		assert.strictEqual<string>(className.fullName, 'Namespace.path1.ClassName');

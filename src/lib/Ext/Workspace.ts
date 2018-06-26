@@ -6,6 +6,7 @@ import Package from './Package';
 import Application from './Application';
 
 const readFile = Util.promisify(Fs.readFile);
+const access = Util.promisify(Fs.access);
 
 /**
  * Рабочее пространства ExtJS-проекта.
@@ -15,6 +16,15 @@ const readFile = Util.promisify(Fs.readFile);
  * Чтение приложений, прописанных в конфигурационном файле рабочего пространства.
  */
 export default class Workspace {
+	static async dirExists(dir: string): Promise<boolean> {
+		try {
+			await access(Path.join(dir));
+		} catch (e) {
+			return false;
+		}
+		return true;
+	}
+
 	private config: any;
 	private packages: Package[] = [];
 
@@ -53,6 +63,9 @@ export default class Workspace {
 		// Загрузка приложений.
 		if ('apps' in this.config) {
 			for (let appDir of this.config.apps) {
+				if (!await Application.dirExists(Path.join(this.dir, appDir))) {
+					throw new Error(`Приложение '${appDir}' не найдено. Исправьте файл '${configFilePath}'.`);
+				}
 				const app = await Application.load(Path.join(this.dir, appDir));
 				app.workspace = this;
 				this.applications.push(app);

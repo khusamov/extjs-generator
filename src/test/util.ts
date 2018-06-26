@@ -15,7 +15,7 @@ export function normalizeString(str: string): string {
 }
 
 export function getTargetDir(dirname): string {
-	return Path.join(Os.tmpdir(), `@${dirname}-${Math.random()}`);
+	return Path.join(Os.tmpdir(), '@TEST', `@${dirname}-${Math.random()}`);
 }
 
 /**
@@ -30,13 +30,30 @@ export async function createFakeWorkspaceDir(): Promise<string> {
 	await MakeDir(workspaceDir);
 	await MakeDir(Path.join(workspaceDir, 'pir-client'));
 	await MakeDir(Path.join(workspaceDir, 'packages/local'));
-	for (let fileInfo of [{
-		from: Path.join(__dirname, 'templateFiles/workspace.json'),
-		to: Path.join(workspaceDir, 'workspace.json')
-	}, {
-		from: Path.join(__dirname, 'templateFiles/app.json'),
-		to: Path.join(workspaceDir, 'pir-client/app.json')
-	}]) {
+	for (
+		let fileInfo of [{
+			from: Path.join(__dirname, 'templateFiles/workspace.json'),
+			to: Path.join(workspaceDir, 'workspace.json')
+		}, {
+			from: Path.join(__dirname, 'templateFiles/app.json'),
+			to: Path.join(workspaceDir, 'pir-client/app.json')
+		}]
+	) {
+		const workspaceConfig = await readFile(fileInfo.from, {encoding: 'utf8'});
+		await writeFile(fileInfo.to, workspaceConfig);
+	}
+	return workspaceDir;
+}
+
+export async function createFakeErrWorkspaceDir(): Promise<string> {
+	const workspaceDir = getTargetDir('FakeWorkspaceDir');
+	await MakeDir(workspaceDir);
+	for (
+		let fileInfo of [{
+			from: Path.join(__dirname, 'templateFiles/workspace.json'),
+			to: Path.join(workspaceDir, 'workspace.json')
+		}]
+	) {
 		const workspaceConfig = await readFile(fileInfo.from, {encoding: 'utf8'});
 		await writeFile(fileInfo.to, workspaceConfig);
 	}

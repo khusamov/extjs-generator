@@ -114,7 +114,7 @@ export default class ClassName implements IClassName {
 	 */
 	get fullName(): string {
 		return ([]
-			.concat(this.namespace.text || [])
+			.concat(this.namespace.name || [])
 			.concat(this.path)
 			.concat(this.name || [])
 			.join('.')

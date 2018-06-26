@@ -70,7 +70,7 @@ export default class Manager {
 	 * @returns {Namespace | undefined}
 	 */
 	get(name: string): Namespace | undefined {
-		return this.namespaces.find(namespace => namespace.text === name);
+		return this.namespaces.find(namespace => namespace.name === name);
 	}
 
 	/**

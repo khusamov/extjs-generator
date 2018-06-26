@@ -144,8 +144,8 @@ export default class BaseClass extends ObjectNode {
 		}
 
 		// Проверка, входит ли класс в заданное пространство имен или нет.
-		if (namespace && name.indexOf(namespace.text) !== 0) {
-			throw new Error(`Класс '${name}' не входит в пространство имен '${namespace.text}'.`);
+		if (namespace && name.indexOf(namespace.name) !== 0) {
+			throw new Error(`Класс '${name}' не входит в пространство имен '${namespace.name}'.`);
 		}
 
 		super(name, _.merge({}, BaseClass.valueDefault, config));

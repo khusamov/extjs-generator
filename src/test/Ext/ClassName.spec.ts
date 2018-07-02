@@ -28,6 +28,7 @@ describe('ClassName', function() {
 		assert.isTrue(ClassName.isValid('Namespace.ClassName'));
 		assert.isTrue(ClassName.isValid('Namespace.path1.ClassName'));
 		assert.isTrue(ClassName.isValid('Namespace.path1.path2.path3.ClassName'));
+		assert.isTrue(ClassName.isValid('Namespace.path1.path2.path3.ClNAME'));
 		assert.isFalse(ClassName.isValid('namespace.ClassName'));
 		assert.isFalse(ClassName.isValid('Namespace.className'));
 		assert.isFalse(ClassName.isValid('ClassName'));

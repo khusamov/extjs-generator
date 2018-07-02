@@ -4,6 +4,7 @@ import { Application } from '../../index';
 
 describe('Application', function() {
 	it('Директория приложения не найдена', async function() {
+		// https://toster.ru/q/541330
 		try {
 			await new Application().load('path/to/app');
 		} catch (e) {

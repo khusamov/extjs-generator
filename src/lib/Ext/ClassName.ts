@@ -40,7 +40,7 @@ export default class ClassName implements IClassName {
 	 */
 	static isValid(name: string): boolean {
 		const parsedName: IClassName = this.parse(name);
-		const nameRe = /^[A-Z]+([A-Z]?[a-z0-9]+)+$/;
+		const nameRe = /^[A-Z]+([A-Z]?[a-z0-9]*)+$/;
 		const pathItemRe = /^[a-z]+((\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?/;
 		return (
 			name.indexOf('.') !== -1

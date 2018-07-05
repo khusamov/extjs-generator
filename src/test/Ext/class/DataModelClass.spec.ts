@@ -33,5 +33,18 @@ describe('DataModelClass', function() {
 			name: 'field1',
 			mapping: 'data.Field1'
 		}]);
+		assert.deepEqual<object>(class1.value, {
+			extend: 'Ext.data.Model',
+			override: undefined,
+			alias: undefined,
+			xtype: undefined,
+			requires: [],
+			uses: [],
+			proxy: {},
+			fields: [{
+				'mapping': 'data.Field1',
+				'name': 'field1'
+			}]
+		});
 	});
 });

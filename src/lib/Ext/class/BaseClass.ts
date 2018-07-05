@@ -17,10 +17,10 @@ import {
 export default class BaseClass extends ObjectNode {
 
 	static valueDefault = {
-		extend: '',
-		override: '',
-		alias: '',
-		xtype: '',
+		extend: new StringNode(undefined),
+		override: new StringNode(undefined),
+		alias: new StringNode(undefined),
+		xtype: new StringNode(undefined),
 		requires: [],
 		uses: []
 	};

@@ -8,11 +8,19 @@ import BaseClass from '../class/BaseClass';
 export default class DataModelClass extends BaseClass {
 	proxy: ObjectNode;
 	fields: ArrayNode;
+	hasOne: ObjectNode;
+	hasMany: ObjectNode;
 	initClass() {
 		if (!this.extend) this.extend = 'Ext.data.Model';
 		this.proxy = new ObjectNode('proxy');
 		this.fields = new ArrayNode('fields');
-		this.add('proxy', this.proxy);
-		this.add('fields', this.fields);
+		this.hasOne = new ObjectNode('hasOne');
+		this.hasMany = new ObjectNode('hasMany');
+		this.add({
+			proxy: this.proxy,
+			fields: this.fields,
+			hasOne: this.hasOne,
+			hasMany: this.hasMany
+		});
 	}
 }

@@ -40,6 +40,8 @@ describe('DataModelClass', function() {
 			xtype: undefined,
 			requires: [],
 			uses: [],
+			hasOne: {},
+			hasMany: {},
 			proxy: {},
 			fields: [{
 				'mapping': 'data.Field1',
@@ -60,6 +62,8 @@ describe('DataModelClass', function() {
 			extend: 'Ext.data.Model',
 			fields: [],
 			override: undefined,
+			hasOne: {},
+			hasMany: {},
 			proxy: {},
 			requires: [],
 			uses: [],

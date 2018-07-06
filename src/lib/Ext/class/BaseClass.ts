@@ -16,15 +16,6 @@ import {
  */
 export default class BaseClass extends ObjectNode {
 
-	static valueDefault = {
-		extend: new StringNode(undefined),
-		override: new StringNode(undefined),
-		alias: new StringNode(undefined),
-		xtype: new StringNode(undefined),
-		requires: [],
-		uses: []
-	};
-
 	namespace: Namespace | undefined;
 
 	/**
@@ -148,7 +139,14 @@ export default class BaseClass extends ObjectNode {
 			throw new Error(`Класс '${name}' не входит в пространство имен '${namespace.name}'.`);
 		}
 
-		super(name, _.merge({}, BaseClass.valueDefault, config));
+		super(name, _.merge({
+			extend: new StringNode(undefined),
+			override: new StringNode(undefined),
+			alias: new StringNode(undefined),
+			xtype: new StringNode(undefined),
+			requires: [],
+			uses: []
+		}, config));
 
 		// Добавление класса в заданное пространство имен.
 		if (namespace) {

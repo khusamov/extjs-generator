@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import { DataModelClass } from '../../../index';
+import { BaseClass, DataModelClass } from '../../../index';
 
 describe('DataModelClass', function() {
 	it('Создание пустого класса DataModelClass', function() {
@@ -45,6 +45,25 @@ describe('DataModelClass', function() {
 				'mapping': 'data.Field1',
 				'name': 'field1'
 			}]
+		});
+	});
+	/**
+	 * Данный тест добавлен только для исключения ситуации, когда создаем один класс,
+	 * а потом второй, то данные из первого класса каким-то образом попадают во второй.
+	 */
+	it('Данные предыдущих классов не должны появляться в последующих', function() {
+		const class1 = new BaseClass('Namespace1.path1.Class1');
+		class1.alias = ['widget.class1', 'widget.class1v2', 'widget.class1v3'];
+		const dataModelClass1 = new DataModelClass('Namespace1.DataModelClass1');
+		assert.deepEqual<object>(dataModelClass1.value, {
+			alias: undefined,
+			extend: 'Ext.data.Model',
+			fields: [],
+			override: undefined,
+			proxy: {},
+			requires: [],
+			uses: [],
+			xtype: undefined
 		});
 	});
 });

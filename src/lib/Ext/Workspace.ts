@@ -59,7 +59,19 @@ export default class Workspace {
 	async load(dir: string): Promise<this> {
 		this.dir = dir;
 		const configFilePath = Path.join(dir, 'workspace.json');
-		this.config = Json5.parse(await readFile(configFilePath, {encoding: 'utf8'}));
+
+		// Предварительная версия обработки ошибок функции Fs.readFile().
+		// Возможные решения тут https://toster.ru/q/545271
+		// Пока предложили использовать https://github.com/winstonjs/winston
+		let configFileData;
+		try {
+			configFileData = await readFile(configFilePath, {encoding: 'utf8'});
+		} catch(e) {
+			Error.captureStackTrace(e);
+			throw e;
+		}
+
+		this.config = Json5.parse(configFileData);
 		// Загрузка приложений.
 		if ('apps' in this.config) {
 			for (let appDir of this.config.apps) {

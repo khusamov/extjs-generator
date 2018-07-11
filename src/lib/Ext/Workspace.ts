@@ -61,6 +61,8 @@ export default class Workspace {
 		const configFilePath = Path.join(dir, 'workspace.json');
 
 		// Предварительная версия обработки ошибок функции Fs.readFile().
+		// Возможные решения тут https://toster.ru/q/545271
+		// Пока предложили использовать https://github.com/winstonjs/winston
 		let configFileData;
 		try {
 			configFileData = await readFile(configFilePath, {encoding: 'utf8'});

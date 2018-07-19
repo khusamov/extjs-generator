@@ -89,6 +89,11 @@ describe('Class', function() {
 				class1.requires.add('Class1', 'Class2', 'Namespace2.sample.Class3');
 				assert.deepEqual<string[]>(class1.requires.value, ['Class1', 'Class2', 'Namespace2.sample.Class3']);
 			});
+			it('Добавление повторяющихся классов в requires', function() {
+				const class1 = new BaseClass('Namespace1.path1.Class1');
+				class1.requires.add('Class1', 'Class2', 'Class1', 'Class2', 'Namespace2.sample.Class3');
+				assert.deepEqual<string[]>(class1.requires.value, ['Class1', 'Class2', 'Namespace2.sample.Class3']);
+			});
 			it('Проверка имеющегося requires', function() {
 				const class1 = new BaseClass('Namespace1.path1.Class1', {
 					requires: ['Class1', 'Class2', 'Namespace2.sample.Class3']
@@ -100,6 +105,11 @@ describe('Class', function() {
 			it('Добавление классов в uses', function() {
 				const class1 = new BaseClass('Namespace1.path1.Class1');
 				class1.uses.add('Class1', 'Class2', 'Namespace2.sample.Class3');
+				assert.deepEqual<string[]>(class1.uses.value, ['Class1', 'Class2', 'Namespace2.sample.Class3']);
+			});
+			it('Добавление повторяющихся классов в uses', function() {
+				const class1 = new BaseClass('Namespace1.path1.Class1');
+				class1.uses.add('Class1', 'Class2', 'Class1', 'Class2', 'Namespace2.sample.Class3');
 				assert.deepEqual<string[]>(class1.uses.value, ['Class1', 'Class2', 'Namespace2.sample.Class3']);
 			});
 		});

@@ -16,6 +16,12 @@ import {
  */
 export default class BaseClass extends ObjectNode {
 
+	static newUniqueArrayNode(): ArrayNode {
+		const result = new ArrayNode(undefined);
+		result.unique = true;
+		return result;
+	}
+
 	namespace: Namespace | undefined;
 
 	/**
@@ -144,8 +150,8 @@ export default class BaseClass extends ObjectNode {
 			override: new StringNode(undefined),
 			alias: new StringNode(undefined),
 			xtype: new StringNode(undefined),
-			requires: [],
-			uses: []
+			requires: BaseClass.newUniqueArrayNode(),
+			uses: BaseClass.newUniqueArrayNode()
 		}, config));
 
 		// Добавление класса в заданное пространство имен.

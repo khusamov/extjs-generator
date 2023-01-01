@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "del": "^3.0.0",
-    "json5": "^1.0.1",
+    "json5": "^2.2.2",
     "khusamov-javascript-generator": "^1.8.3",
     "lodash": "^4.17.4",
     "mkdirp-promise": "^5.0.1",
